@@ -15,19 +15,22 @@ a {
     position: relative;
 }
 
+
+/* Menu Sidebar */
 .wrapper .menu-sidebar {
     position: fixed;
     width: 300px;
     height: 100%;
-    background-color: rgb(81, 227, 252);
+    background-color: rgb(77, 218, 243);
     padding: 30px 0px;
+    box-shadow: 2px 0px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
 .wrapper .menu-sidebar h2 {
     font-size: 28px;
     color: white;
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 65px;
 }
 
 .wrapper .menu-sidebar ul {
@@ -36,19 +39,53 @@ a {
 
 .wrapper .menu-sidebar li {
     color: white;
-    padding: 15px;
+    padding: 0px;
     list-style-type: none;
     font-weight: 600;
+    display: flex;
+    flex-direction: column;
 }
 
 .wrapper .menu-sidebar a {
+    width: auto;
+    height: 100%;
+    padding: 15px 20px;
     color: white;
 }
 
-.wrapper .menu-sidebar li:hover{
+.wrapper .menu-sidebar .active li {
     background-color: rgb(39, 39, 80);
-} 
+}
 
-.wrapper .menu-sidebar ul li a{
-    display: block;
+.wrapper .menu-sidebar li:hover {
+    background-color: rgba(175, 174, 174, 0.658);
+    border-left: 4px solid tomato;
+}
+
+/* Main content */
+.main-content {
+    margin-left: 350px;
+    margin-top: 38px;
+}
+
+/* input e label */
+
+label {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 20px;
+    font-weight: 700;
+}
+
+input {
+    border: none;
+    border-bottom: 1px solid grey;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 20px;
+}
+
+input:focus {
+    outline: none;
+    border-bottom: solid 2px tomato;
 }

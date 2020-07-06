@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +9,12 @@
     <script src="js/GerenciadorCinema.js" type="module"></script>
 
 </head>
+
 <body>
 
     <div class="wrapper">
 
-        <div class="menu-sidebar">
+        <nav class="menu-sidebar">
             <h2>Cinema High Tech</h2>
             <ul>
                 <li> <a href="">Reservas</a></li>
@@ -21,14 +23,29 @@
                 <li> <a href="">Clientes</a></li>
                 <li> <a href="">Filmes</a></li>
             </ul>
-        </div>
+        </nav>
 
-        <div class="main-content">
+        <main class="main-content">
+            <div>
+                <label for="nome_cliente">Nome do Cliente</label>
+                <input type="text" placeholder="Nome do Cliente" id="nome_cliente">
+            </div>
 
-        </div>
+            <div>
+                <label for="idade_cliente">Idade do Cliente</label>
+                <input type="text" placeholder="Idade do Cliente" id="idade_cliente">
+            </div>
+
+            <div>
+                <label for="email_cliente">E-mail do Cliente</label>
+                <input type="text" placeholder="E-mail do Cliente" id="email_cliente">
+            </div>
+
+        </main>
 
     </div>
 
-    
+
 </body>
+
 </html>
