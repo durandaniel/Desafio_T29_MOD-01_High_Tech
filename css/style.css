@@ -10,6 +10,7 @@ a {
     text-decoration: none;
 }
 
+/* separação inicial nav(menu sidebar) e main */
 .wrapper {
     display: flex;
     position: relative;
@@ -65,11 +66,12 @@ a {
 /* Main content */
 .main-content {
     margin-left: 350px;
-    margin-top: 38px;
+    margin-top: 70px;
+    display: flex;
+    flex-direction: column;
 }
 
 /* input e label */
-
 label {
     padding-left: 40px;
     padding-right: 40px;
@@ -88,4 +90,16 @@ input {
 input:focus {
     outline: none;
     border-bottom: solid 2px tomato;
+}
+
+/* Top-bar Title Page */
+.top-bar {
+    background-color: rgb(17, 17, 58);
+    color: white;
+    width: 100%;
+    padding: 15px 50px;
+    position: fixed;
+    margin-top: -70px;
+    margin-left: -50px;
+    font-weight: 100;
 }
