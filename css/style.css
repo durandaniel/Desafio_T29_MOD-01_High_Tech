@@ -1,4 +1,4 @@
-body {
+body, html {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
@@ -11,17 +11,19 @@ a {
 }
 
 /* separação inicial nav(menu sidebar) e main */
+
 .wrapper {
     display: flex;
+    align-items: stretch;
+    height: 100%;
+    width: 100%;
     position: relative;
 }
 
-
 /* Menu Sidebar */
+
 .wrapper .menu-sidebar {
-    position: fixed;
-    width: 300px;
-    height: 100%;
+    flex-grow: 1;
     background-color: rgb(77, 218, 243);
     padding: 30px 0px;
     box-shadow: 2px 0px 10px 0px rgba(0, 0, 0, 0.5);
@@ -63,17 +65,34 @@ a {
     border-left: 4px solid tomato;
 }
 
+.conteudo {
+    display: flex;
+    flex-grow: 20;
+    flex-direction: column;
+}
 /* Main content */
 .main-content {
-    margin-left: 350px;
-    margin-top: 70px;
+    margin-left: 40px;
+    margin-top: 80px;
     display: flex;
     flex-direction: column;
 }
 
+/* Top-bar Title Page */
+
+.top-bar {
+    background-color: rgb(17, 17, 58);
+    color: white;
+    width: 100%;
+    padding: 15px 50px;
+    position: fixed;
+    margin-top: 0px;
+    font-weight: 100;
+}
+
 /* input e label */
+
 label {
-    padding-left: 40px;
     padding-right: 40px;
     padding-top: 20px;
     font-weight: 700;
@@ -92,14 +111,44 @@ input:focus {
     border-bottom: solid 2px tomato;
 }
 
-/* Top-bar Title Page */
-.top-bar {
-    background-color: rgb(17, 17, 58);
+
+.flex {
+    display: flex;
+}
+
+.flex-collum {
+    flex-direction: column;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.btn {
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 10px 15px;
+    box-shadow: 1px 2px 2px 1px rgba(50, 50, 50, 0.77);
+}
+
+.btn:focus {
+    outline: none;
+}
+
+.btn:active {
+    outline: none;
+    box-shadow: inset 1px 1px 2px 1px rgba(50, 50, 50, 1);
+}
+
+.btn-red {
     color: white;
-    width: 100%;
-    padding: 15px 50px;
-    position: fixed;
-    margin-top: -70px;
-    margin-left: -50px;
-    font-weight: 100;
+    background-color: red;
+    margin: 20px 5px 20px 20px;
+}
+
+.btn-save {
+    color: white;
+    background-color: rgb(17, 17, 58);
+    margin: 20px 0px 20px 0px;
 }
