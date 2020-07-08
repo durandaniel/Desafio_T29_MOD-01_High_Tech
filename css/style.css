@@ -72,22 +72,48 @@ a {
 }
 /* Main content */
 .main-content {
-    margin-left: 80px;
-    margin-top: 100px;
+    /* margin-left: 80px;
+    margin-top: 100px; */
     display: flex;
     flex-direction: column;
+    padding-top: 120px;
 }
 
 /* Top-bar Title Page */
-
 .top-bar {
+    position: fixed;
     background-color: rgb(17, 17, 58);
     color: white;
     width: 100%;
     padding: 15px 50px;
-    position: fixed;
     margin-top: 0px;
     font-weight: 100;
+}
+
+.bg-cine{
+    background-image: url(/img/sala-cinema-2.jpg) ;
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+    /* opacity: 0.5; */
+}
+
+.subtitle-01 {
+    font-size: 14px;
+    font-weight: 600;
+    color: grey;
+    margin: 2px;
+}
+
+.title-01 {
+    font-size: 30px;
+    color: black;
+    margin: 10px;
+}
+.title-02 {
+    font-size: 20px;
+    color: rgb(90, 90, 90);
+    margin: 8px;
 }
 
 /* input e label */
@@ -100,7 +126,7 @@ label {
 
 input {
     border: none;
-    border-bottom: 1px solid grey;
+    border-bottom: 2px solid grey;
     padding-left: 40px;
     padding-right: 40px;
     padding-top: 20px;
@@ -111,12 +137,30 @@ input:focus {
     border-bottom: solid 2px tomato;
 }
 
+fieldset{
+    margin: 30px;
+    padding: 15px 10px 30px 10px;
+}
 
+/* CARD CONFIG */
+.card {
+    background: #fff;
+    border-radius: 2px;
+    margin: 1rem;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.card-login {
+    padding: 55px;
+    margin-top: -120px ;
+}
+
+/* FLEX CONFIGURATION */
 .flex {
     display: flex;
 }
 
-.flex-collum {
+.flex-column {
     flex-direction: column;
 }
 
@@ -124,11 +168,35 @@ input:focus {
     flex-direction: row;
 }
 
+.justify-center {
+    justify-content: center;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.total-height{
+    height: 100%;
+}
+
+.total-width{
+    width: 100%;
+}
+
+.space-between{
+    justify-content: space-between;
+}
+
 .btn {
     cursor: pointer;
+    font-weight: 600;
+    color: white;
+    background-color: rgb(184, 184, 184);
     border: 1px solid transparent;
     border-radius: 4px;
     padding: 10px 15px;
+    margin: 20px 10px 20px 10px;
     box-shadow: 1px 2px 2px 1px rgba(50, 50, 50, 0.77);
 }
 
@@ -150,5 +218,33 @@ input:focus {
 .btn-save {
     color: white;
     background-color: rgb(17, 17, 58);
-    margin: 20px 0px 20px 0px;
+}
+
+.espaco{
+    margin: 15px 0px 15px 0px;
+}
+
+
+/* Propriedades TABELA */
+.tabela-model {
+    width: 40%;
+    border-collapse: collapse;
+  }
+
+th,
+td {
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+  padding: 20px 0px;
+  text-align: left;
+}
+
+th {
+  color: gray;
+  font-weight: 300;
+}
+
+tr:hover {
+  background-color: lightgray;
+  color: white;
 }

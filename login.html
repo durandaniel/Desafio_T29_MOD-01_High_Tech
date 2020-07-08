@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema High Tech (Daniel Duran)</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/GerenciadorCinema.js" type="module"></script>
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <nav class="menu-sidebar">
+            <h2>Cinema High Tech</h2>
+            <ul>
+                <li> <a href="index.html">Home</a></li>
+                <li> <a href="reservas.html">Reservas</a></li>
+                <li> <a href="sessoes.html">Sessões</a></li>
+                <li> <a href="salas.html">Salas</a></li>
+                <li> <a href="clientes.html">Clientes</a></li>
+                <li> <a href="filmes.html">Filmes</a></li>
+            </ul>
+        </nav>
+
+        <div class="conteudo">
+
+            <h2 class="top-bar">Login</h2>
+
+            <main class="main-content total-height total-width">
+
+
+                <div class="flex flex-column align-center justify-center total-height total-width">
+
+
+                    <div class="card card-login">
+                        <div class="flex flex-column align-center justify-center">
+                            <h2>Bem Vindo ao Cinema High-Tech</h2>
+                            <h3 class="subtitle-01">Para iniciarmos a sessão será necessário fazer Login</h3>
+                            <h3 class="subtitle-01">Se já possui Cadastro Preencha os campos abaixo</h3>
+                            <h3 class="subtitle-01">Caso não possua clique em "CADASTRO"</h3>
+                        </div>
+
+                        <fieldset>
+                            <div class="flex space-between">
+                                <label for="username">Username</label>
+                                <input type="text" placeholder="Username" id="username">
+                            </div>
+
+                            <div class="flex space-between">
+                                <label for="password">Senha</label>
+                                <input type="password" placeholder="Senha" id="password">
+                            </div>
+                        </fieldset>
+
+                        <div class="flex align-center justify-center">
+                            <div>
+                                <button class="btn btn-save">Login</button>
+                            </div>
+
+                            <div>
+                                <button onclick="window.location.href='cadastro.html'" class="btn">Cadastro</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </main>
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

@@ -34,23 +34,28 @@
 
                 <div class="flex flex-column align-center total-height total-width">
 
-                    <h2>NOVO CLIENTE</h2>
+                    <h2>NOVO USUÁRIO (ATENDENTE)</h2>
                     <div class="flex flex-column">
 
 
                         <div class="flex flex-row space-between">
-                            <label for="nome_cliente">Nome do Cliente</label>
-                            <input type="text" placeholder="Nome do Cliente" id="nome_cliente">
+                            <label for="nome_usuario">Nome do Cliente</label>
+                            <input type="text" placeholder="Nome do Usuario" id="nome_usuario">
                         </div>
 
                         <div class="flex flex-row space-between">
-                            <label for="idade_cliente">Idade do Cliente</label>
-                            <input type="number" placeholder="Idade do Cliente" id="idade_cliente">
+                            <label for="email_usuario">E-mail do Usuario</label>
+                            <input type="text" placeholder="E-mail do Usuario" id="email_usuario">
                         </div>
 
                         <div class="flex flex-row space-between">
-                            <label for="email_cliente">E-mail do Cliente</label>
-                            <input type="text" placeholder="E-mail do Cliente" id="email_cliente">
+                            <label for="usuario">Usuario de acesso</label>
+                            <input type="text" placeholder="Username" id="usuario">
+                        </div>
+
+                        <div class="flex flex-row space-between">
+                            <label for="senha">Idade do usuario</label>
+                            <input type="password" placeholder="Senha" id="senha">
                         </div>
 
                         <div class="flex justify-center">
@@ -59,7 +64,7 @@
                             </div>
 
                             <div>
-                                <button class="btn btn-red">Cancelar</button>
+                                <button class="btn btn-red">Editar</button>
                             </div>
 
                         </div>
@@ -72,8 +77,9 @@
                         <thead>
                             <tr>
                                 <td>Nome</td>
-                                <td>Idade</td>
                                 <td>Email</td>
+                                <td>Username</td>
+                                <td>Senha</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -82,6 +88,7 @@
                         <tbody>
                         </tbody>
                     </table>
+
                 </div>
             </main>
         </div>

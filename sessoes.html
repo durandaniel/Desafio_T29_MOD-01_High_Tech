@@ -10,7 +10,7 @@
 
 </head>
 
-<body>
+<body onload="gerenciadorCinema.verifyLogin()">
 
     <div class="wrapper">
 
@@ -28,36 +28,18 @@
 
         <div class="conteudo">
 
-            <h2 class="top-bar">Gerência de Clientes</h2>
+            <h2 class="top-bar">Home - Bem Vindo</h2>
 
-            <main class="main-content">
-
-
-                <h2>NOVO CLIENTE</h2>
-                <div class="flex flex-collum">
+            <main class="main-content total-height total-width">
 
 
-                    <div>
-                        <label for="nome_cliente">Nome do Cliente</label>
-                        <input type="text" placeholder="Nome do Cliente" id="nome_cliente">
-                    </div>
+                <div class="flex flex-column align-center justify-center total-height total-width">
 
-                    <div>
-                        <label for="idade_cliente">Idade do Cliente</label>
-                        <input type="text" placeholder="Idade do Cliente" id="idade_cliente">
-                    </div>
 
-                    <div>
-                        <label for="email_cliente">E-mail do Cliente</label>
-                        <input type="text" placeholder="E-mail do Cliente" id="email_cliente">
-                    </div>
-                    <div class="flex">
-                        <div>
-                            <button class="btn btn-save">Salvar</button>
-                        </div>
-
-                        <div>
-                            <button class="btn btn-red">Cancelar</button>
+                    <div class="card card-login">
+                        <div class="flex flex-column align-center justify-center">
+                            <h2 class="title-01">Bem Vindo ao Cinema High-Tech</h2>
+                            <h2 class="title-02">Utilize os menus Laterias para navegar entre as seções</h2>
                         </div>
 
                     </div>
