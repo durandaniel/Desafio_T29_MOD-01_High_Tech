@@ -56,7 +56,7 @@ a {
     color: white;
 }
 
-.wrapper .menu-sidebar .active li {
+.wrapper .menu-sidebar .active {
     background-color: rgb(39, 39, 80);
 }
 
@@ -72,8 +72,8 @@ a {
 }
 /* Main content */
 .main-content {
-    margin-left: 40px;
-    margin-top: 80px;
+    margin-left: 80px;
+    margin-top: 100px;
     display: flex;
     flex-direction: column;
 }
