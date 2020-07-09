@@ -28,22 +28,87 @@
 
         <div class="conteudo">
 
-            <h2 class="top-bar">Home - Bem Vindo</h2>
+            <h2 class="top-bar">Gerência de Clientes</h2>
 
             <main class="main-content total-height total-width">
 
+                <div class="flex flex-column align-center total-height total-width">
 
-                <div class="flex flex-column align-center justify-center total-height total-width">
+                    <h2>NOVO CLIENTE</h2>
+                    <div class="flex flex-column">
 
 
-                    <div class="card card-login">
-                        <div class="flex flex-column align-center justify-center">
-                            <h2 class="title-01">Bem Vindo ao Cinema High-Tech</h2>
-                            <h2 class="title-02">Utilize os menus Laterias para navegar entre as seções</h2>
+                        <div class="flex flex-row space-between">
+                            <label for="filme_sessao">Filme da Sessão</label>
+                            <select name="" id="">
+                                <option value="">default</option>
+                            </select>
                         </div>
 
+                        <div class="flex flex-row space-between">
+                            <label for="sala_sessao">Sala da Sessão</label>
+                            <select name="" id="">
+                                <option value="">default</option>
+                            </select>
+                        </div>
+
+                        <div class="flex flex-row space-between">
+                            <label for="idioma_sessao">Dublado/Legendado</label>
+                            <select name="" id="">
+                                <option value="">default</option>
+                            </select>
+                        </div>
+
+                        <div class="flex flex-row space-between">
+                            <label for="idioma_sessao">3D/2D</label>
+                            <select name="" id="">
+                                <option value="">default</option>
+                            </select>
+                        </div>
+
+                        <div class="flex flex-row space-between">
+                            <label for="data_sessao">Data da Sessão</label>
+                            <input type="text" placeholder="Data da Sessão" id="data_sessao">
+                        </div>
+
+                        <div class="flex flex-row space-between">
+                            <label for="horario_sessao">Horário de início</label>
+                            <input type="text" placeholder="Horário de início da Sessão" id="horario_sessao">
+                        </div>
+
+                        <div class="flex justify-center">
+                            <div>
+                                <button class="btn btn-save">Salvar</button>
+                            </div>
+
+                            <div>
+                                <button class="btn btn-red">Cancelar</button>
+                            </div>
+
+                        </div>
                     </div>
 
+                    <div class="espaco"></div>
+                    <div class="espaco"></div>
+
+                    <h2>Sessoes Cadastradas</h2>
+                    
+                    <div class="espaco"></div>
+
+                    <table class="tabela-model">
+                        <thead>
+                            <tr>
+                                <td>Nome</td>
+                                <td>Idade</td>
+                                <td>Email</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </main>
         </div>

@@ -28,22 +28,74 @@
 
         <div class="conteudo">
 
-            <h2 class="top-bar">Home - Bem Vindo</h2>
+            <h2 class="top-bar">Gerência de Filmes</h2>
 
             <main class="main-content total-height total-width">
 
+                <div class="flex flex-column align-center total-height total-width">
 
-                <div class="flex flex-column align-center justify-center total-height total-width">
+                    <h2>NOVO FILME</h2>
+                    <div class="flex flex-column">
 
 
-                    <div class="card card-login">
-                        <div class="flex flex-column align-center justify-center">
-                            <h2 class="title-01">Bem Vindo ao Cinema High-Tech</h2>
-                            <h2 class="title-02">Utilize os menus Laterias para navegar entre as seções</h2>
+                        <div class="flex flex-row space-between">
+                            <label for="nome_filme">Nome do Filme</label>
+                            <input type="text" placeholder="Nome do Filme" id="nome_filme">
                         </div>
 
+                        <div class="flex flex-row space-between">
+                            <label for="duracao_filme">Duração</label>
+                            <input type="number" placeholder="Duração do Filme" id="duracao_filme">
+                        </div>
+
+                        <div class="flex flex-row space-between">
+                            <label for="faixa_etaria">Faixa Etária</label>
+                            <input type="text" placeholder="Ex: 14 anos" id="faixa_etaria">
+                        </div>
+
+                        <div class="flex flex-row space-between">
+                            <label for="genero_filme">Faixa Etária</label>
+                            <input type="text" placeholder="Ex: Ação" id="genero_filme">
+                        </div>
+
+                        <div class="flex flex-row space-between">
+                            <label for="sinopse_filme">Sinopse</label>
+                            <input type="text" placeholder="Sinopse do Filme" id="sinopse_filme">
+                        </div>
+
+                        <div class="flex justify-center">
+                            <div>
+                                <button class="btn btn-save">Salvar</button>
+                            </div>
+
+                            <div>
+                                <button class="btn btn-red">Cancelar</button>
+                            </div>
+
+                        </div>
                     </div>
 
+                    <div class="espaco"></div>
+                    <div class="espaco"></div>
+
+                    <h2>Filmes Cadastrados</h2>
+                    
+                    <div class="espaco"></div>
+
+                    <table class="tabela-model">
+                        <thead>
+                            <tr>
+                                <td>Nome</td>
+                                <td>Idade</td>
+                                <td>Email</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </main>
         </div>
