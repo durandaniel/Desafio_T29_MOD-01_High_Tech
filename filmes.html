@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cinema High Tech (Daniel Duran)</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/GerenciadorCinema.js" type="module"></script>
-
+    <script src="js/GerenciadorCinema.js"></script>
+    <script>window.onload = gerenciadorCinema.verifyLogin()</script>
+    <script>window.onload = gerenciadorCinema.getColection()</script>
 </head>
 
-<body onload="gerenciadorCinema.verifyLogin()">
+<body>
 
     <div class="wrapper">
 

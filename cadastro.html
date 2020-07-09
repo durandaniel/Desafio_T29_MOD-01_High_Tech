@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cinema High Tech (Daniel Duran)</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/GerenciadorCinema.js" type="module"></script>
-
+    <script src="js/GerenciadorCinema.js"></script>
+    <script>window.onload = gerenciadorCinema.getColection()</script>
 </head>
 
-<body onload="gerenciadorCinema.verifyLogin()">
+<body onload="gerenciadorCinema.createUsersTable()">
 
     <div class="wrapper">
 
@@ -50,21 +50,21 @@
 
                         <div class="flex flex-row space-between">
                             <label for="usuario">Usuario de acesso</label>
-                            <input type="text" placeholder="Username" id="usuario">
+                            <input type="text" placeholder="Username" id="username">
                         </div>
 
                         <div class="flex flex-row space-between">
-                            <label for="senha">Idade do usuario</label>
+                            <label for="senha">Senha</label>
                             <input type="password" placeholder="Senha" id="senha">
                         </div>
 
                         <div class="flex justify-center">
                             <div>
-                                <button class="btn btn-save">Salvar</button>
+                                <button class="btn btn-save" onclick="gerenciadorCinema.createUsuario()" id="btn-save">Salvar</button>
                             </div>
 
                             <div>
-                                <button class="btn btn-red">Editar</button>
+                                <button class="btn btn-red" onclick="gerenciadorCinema.cleanUserField()">Limpar</button>
                             </div>
 
                         </div>
@@ -87,8 +87,8 @@
                                 <td>Excluir</td>
                             </tr>
                         </thead>
+                        <tbody id="users_tbody">
 
-                        <tbody>
                         </tbody>
                     </table>
 

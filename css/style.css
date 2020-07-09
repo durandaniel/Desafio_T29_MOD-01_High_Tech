@@ -273,3 +273,11 @@ tr:hover {
   background-color: lightgray;
   color: white;
 }
+
+thead td {
+    font-weight: 800;
+}
+
+.img-table {
+    width: 20px;
+}
