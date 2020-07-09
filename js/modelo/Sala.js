@@ -11,6 +11,8 @@ export default class Sala {
                 this.cadeiras["fileira" + alfabeto.charAt(i)][j] = "";
             }
         }
-
+        
     }
+
+
 }

@@ -10,6 +10,40 @@ a {
     text-decoration: none;
 }
 
+select {
+    width: 1px%;
+}
+
+/* input e label */
+
+label {
+    padding-right: 40px;
+    padding-top: 20px;
+    font-weight: 700;
+}
+
+.label-select {
+    padding-top: 0px;
+}
+
+input {
+    border: none;
+    border-bottom: 2px solid grey;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 20px;
+}
+
+input:focus {
+    outline: none;
+    border-bottom: solid 2px tomato;
+}
+
+fieldset{
+    margin: 30px;
+    padding: 15px 10px 30px 10px;
+}
+
 /* separação inicial nav(menu sidebar) e main */
 
 .wrapper {
@@ -116,32 +150,6 @@ a {
     margin: 8px;
 }
 
-/* input e label */
-
-label {
-    padding-right: 40px;
-    padding-top: 20px;
-    font-weight: 700;
-}
-
-input {
-    border: none;
-    border-bottom: 2px solid grey;
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-top: 20px;
-}
-
-input:focus {
-    outline: none;
-    border-bottom: solid 2px tomato;
-}
-
-fieldset{
-    margin: 30px;
-    padding: 15px 10px 30px 10px;
-}
-
 /* CARD CONFIG */
 .card {
     background: #fff;
@@ -176,6 +184,11 @@ fieldset{
     align-items: center;
 }
 
+.space-between{
+    justify-content: space-between;
+}
+
+
 .total-height{
     height: 100%;
 }
@@ -184,8 +197,20 @@ fieldset{
     width: 100%;
 }
 
-.space-between{
-    justify-content: space-between;
+.width-80 {
+    width: 80%;
+}
+
+.width-50 {
+    width: 50%;
+}
+
+.height-50 {
+    height: 50%;
+}
+
+.margin-10 {
+    margin: 10px;
 }
 
 .btn {

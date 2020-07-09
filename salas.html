@@ -28,22 +28,65 @@
 
         <div class="conteudo">
 
-            <h2 class="top-bar">Home - Bem Vindo</h2>
+            <h2 class="top-bar">Gerência de Salas de Cinema</h2>
 
             <main class="main-content total-height total-width">
 
+                <div class="flex flex-column align-center total-height total-width">
 
-                <div class="flex flex-column align-center justify-center total-height total-width">
+                    <h2>NOVA SALA</h2>
+                    <div class="flex flex-column">
 
 
-                    <div class="card card-login">
-                        <div class="flex flex-column align-center justify-center">
-                            <h2 class="title-01">Bem Vindo ao Cinema High-Tech</h2>
-                            <h2 class="title-02">Utilize os menus Laterias para navegar entre as seções</h2>
+                        <div class="flex flex-row space-between">
+                            <label for="nome_cliente">Nome da sala</label>
+                            <input type="text" placeholder="Nome da sala" id="nome_cliente">
                         </div>
 
+                        <div class="flex flex-row space-between">
+                            <label for="fileiras">Fileiras na Sala</label>
+                            <input type="number" placeholder="6" id="fileiras" disabled>
+                        </div>
+
+                        <div class="flex flex-row space-between">
+                            <label for="ecadeira_por_fileira">Cadeiras por Fileira</label>
+                            <input type="number" placeholder="10" id="ecadeira_por_fileira" disabled>
+                        </div>
+
+                        <div class="flex justify-center">
+                            <div>
+                                <button class="btn btn-save">Salvar</button>
+                            </div>
+
+                            <div>
+                                <button class="btn btn-red">Cancelar</button>
+                            </div>
+
+                        </div>
                     </div>
 
+                    <div class="espaco"></div>
+                    <div class="espaco"></div>
+                    
+                    <h2>Salas Cadastradas</h2>
+                    
+                    <div class="espaco"></div>
+
+
+                    <table class="tabela-model">
+                        <thead>
+                            <tr>
+                                <td>Nome da Sala</td>
+                                <td>Fileiras</td>
+                                <td>Cadeira/Fileira</td>
+                                <td>Editar</td>
+                                <td>Excluir</td>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </main>
         </div>
