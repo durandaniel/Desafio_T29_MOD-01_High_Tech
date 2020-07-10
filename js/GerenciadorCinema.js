@@ -584,8 +584,8 @@ class GerenciadorCinema {
 
     cleanSalaField() {
         document.getElementById("nome_sala").value = "";
-        document.getElementById("fileiras").value = "";
-        document.getElementById("cadeira_por_fileira").value = "";
+        // document.getElementById("fileiras").value = "";
+        // document.getElementById("cadeira_por_fileira").value = "";
     }
 
     createSalaTable() {
