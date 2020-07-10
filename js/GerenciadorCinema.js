@@ -28,73 +28,81 @@ class GerenciadorCinema {
 
     // gerenciadorCinema
 
+    getColection() {
+
+        if (localStorage.getItem('usuarios') == null) //ou seja, se estiver sem nada no local storage cria um array vazio
+            localStorage.setItem('usuarios', JSON.stringify(this.usuarios));
+        this.usuarios = JSON.parse(localStorage.getItem('usuarios')); //se ja tiver criado no localStorage, faz a busca
+
+        if (localStorage.getItem('clientes') == null)
+            localStorage.setItem('clientes', JSON.stringify(this.clientes));
+        this.clientes = JSON.parse(localStorage.getItem('clientes'));
+
+        if (localStorage.getItem('filmes') == null)
+            localStorage.setItem('filmes', JSON.stringify(this.filmes));
+        this.filmes = JSON.parse(localStorage.getItem('filmes'));
+
+        if (localStorage.getItem('cadeiras') == null)
+            localStorage.setItem('cadeiras', JSON.stringify(this.cadeiras));
+        this.cadeiras = JSON.parse(localStorage.getItem('cadeiras'));
+
+        if (localStorage.getItem('salas') == null)
+            localStorage.setItem('salas', JSON.stringify(this.salas));
+        this.salas = JSON.parse(localStorage.getItem('salas'));
+
+        if (localStorage.getItem('sessoes') == null)
+            localStorage.setItem('sessoes', JSON.stringify(this.sessoes));
+        this.sessoes = JSON.parse(localStorage.getItem('sessoes'));
+
+        if (localStorage.getItem('usersID') == null)
+            localStorage.setItem('usersID', JSON.stringify(this.usersID));
+        this.usersID = JSON.parse(localStorage.getItem('usersID'));
+    }
+
     verifyLogin() {
-        if (localStorage.logged === null || localStorage.logged === undefined || localStorage.logged === false || localStorage.logged === "") {
+        if (localStorage.logged === undefined) {
+            localStorage.setItem('logged', false);
+        }
+        if (localStorage.logged == "false") {
             window.location.href = 'login.html'
         }
     }
 
-    getColection() {
-        this.usuarios = JSON.parse(localStorage.getItem('usuarios'));
-        if (this.usuarios == null)
-            this.usuarios = [];
+    //Login
 
-        this.clientes = JSON.parse(localStorage.getItem('clientes'));
-        if (this.clientes == null)
-            this.clientes = [];
+    checkLogin() {
 
-        this.filmes = JSON.parse(localStorage.getItem('filmes'));
-        if (this.filmes == null)
-            this.filmes = [];
+        let userLogin = {};
 
-        this.cadeiras = JSON.parse(localStorage.getItem('cadeiras'));
-        if (this.cadeiras == null)
-            this.cadeiras = [];
+        userLogin.username = document.getElementById("username").value;
+        userLogin.password = document.getElementById("password").value;
 
-        this.salas = JSON.parse(localStorage.getItem('salas'));
-        if (this.salas == null)
-            this.salas = [];
+        let indexOnArray = this.indexOnArray(this.usuarios, "username", userLogin.username);
 
-        this.sessoes = JSON.parse(localStorage.getItem('sessoes'));
-        if (this.sessoes == null)
-            this.sessoes = [];
+        if (indexOnArray != -1) { //ou seja, se achou o login entra aqui
+            if (userLogin.password == this.usuarios[indexOnArray].senha) { //se foi compatível com a senha deixa ele logar
+                localStorage.setItem('logged', true);
+                window.location.href = 'index.html';
+            }
+        }
 
-        this.usersID = JSON.parse(localStorage.getItem('usersID'));
-        if (this.usersID == null)
-            this.usersID = 0;
     }
 
-    inserirLinha() {
-        let tabela = document.getElementById("tabela");
+    //logout
+    logout() {
+        localStorage.setItem('logged', false);
+        window.location.href = 'index.html';
+    }
 
-        let linha = tabela.insertRow();
-        linha.id = "linha-" + this.contador;
-
-        let colunaNome = linha.insertCell();
-        let colunaIdade = linha.insertCell();
-        let colunaEmail = linha.insertCell();
-        let colunaExcluir = linha.insertCell();
-        let colunaEditar = linha.insertCell();
-
-        colunaNome.innerText = convidado.nome;
-        colunaIdade.innerText = convidado.idade;
-        colunaEmail.innerText = convidado.email;
-
-        let imgExcluir = document.createElement("img");
-        imgExcluir.src = "img/deletar.svg";
-        imgExcluir.setAttribute(
-            "onclick", `gerenciadorCinema.remover(${this.contador})`
-        );
-
-        colunaExcluir.appendChild(imgExcluir);
-
-        let imgEditar = document.createElement("img");
-        imgEditar.src = "img/editar.svg";
-        imgEditar.setAttribute(
-            "onclick", `gerenciadorCinema.editar(${this.contador})`
-        );
-
-        colunaEditar.appendChild(imgEditar);
+    indexOnArray(array, atributo, valorBuscado) {
+        let index = -1;
+        for (let i = 0; i < array.length; i++) { //fazendo busca do nome do usuario n localStorage
+            if (array[i][atributo] == valorBuscado) {
+                index = i;
+                return index;
+            }
+        }
+        return index;
     }
 
     // cadeira
@@ -145,7 +153,6 @@ class GerenciadorCinema {
             return false
         }
     }
-
 
     verifyUsuarioInLocalStorage(usuario) { //retorna true se não estiver no banco local storage
 
@@ -273,7 +280,7 @@ class GerenciadorCinema {
             this.usuarios[indexOnArray].senha = document.getElementById("senha").value;
 
             document.getElementById("btn-save").innerText = "Salvar";
-            document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.userEdit(${id})`);
+            document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.createUsuario()`);
 
             localStorage.setItem('usuarios', JSON.stringify(this.usuarios));
             this.getColection();

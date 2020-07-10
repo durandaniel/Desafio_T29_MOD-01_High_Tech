@@ -115,13 +115,24 @@ fieldset{
 
 /* Top-bar Title Page */
 .top-bar {
-    position: fixed;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     background-color: rgb(17, 17, 58);
     color: white;
     width: 100%;
-    padding: 15px 50px;
+    padding: 15px 30px;
+    box-sizing: border-box;
     margin-top: 0px;
     font-weight: 100;
+}
+
+.top-bar .logout{
+    margin-left: 80px;
+    cursor: pointer;
+}
+.top-bar .logout:hover{
+    transform: scale(1.1);
 }
 
 .bg-cine{
