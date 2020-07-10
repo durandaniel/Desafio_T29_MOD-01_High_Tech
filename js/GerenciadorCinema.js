@@ -12,7 +12,7 @@ class GerenciadorCinema {
         this.sessoes = [];
         this.logged = false;
         // cadeira
-        this.cadeiras = [];
+        this.cadeiras = {}; //contém o nome das salas que contém oa arrays de cadeiras
         // cliente
         this.clientes = [];
         // filme
@@ -577,6 +577,10 @@ class GerenciadorCinema {
         sala.id = this.salasID;
         this.salasID++;
         localStorage.setItem('salasID', JSON.stringify(this.salasID));
+
+        let totalCadeiras = sala.fileiras * sala.cadeiras;
+        this.createCadeirasDaSala(sala.nome, totalCadeiras);
+
         this.salas.push(sala);
         localStorage.setItem('salas', JSON.stringify(this.salas));
         this.getColection();
@@ -660,10 +664,13 @@ class GerenciadorCinema {
 
     saveSalaEdit(id) {
 
+        let nomeDaSala = "";
+
         let indexOnArray = "";
         for (let i = 0; i < this.salas.length; i++) { //fazendo busca do nome da sala no localStorage
             if (this.salas[i].id == id) {
                 indexOnArray = i;
+                nomeDaSala = this.salas[i].nome;
             }
         }
 
@@ -676,10 +683,18 @@ class GerenciadorCinema {
             this.salas[indexOnArray].fileiras = document.getElementById("fileiras").value
             this.salas[indexOnArray].cadeiras = document.getElementById("cadeira_por_fileira").value
 
+            this.cadeiras[document.getElementById("nome_sala").value] = this.cadeiras[nomeDaSala]; //trocando o nome da key do objeto
+            console.log("aqui em baixooo")
+            console.log(this.cadeiras[document.getElementById("nome_sala").value])
+
+            delete this.cadeiras[nomeDaSala];
+
+            localStorage.setItem('cadeiras', JSON.stringify(this.cadeiras));
+            localStorage.setItem('salas', JSON.stringify(this.salas));
+
             document.getElementById("btn-save").innerText = "Salvar";
             document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.createSala()`);
 
-            localStorage.setItem('salas', JSON.stringify(this.salas));
             this.getColection();
 
             this.cleanSalaField();
@@ -693,20 +708,27 @@ class GerenciadorCinema {
 
         this.getColection();
 
+        let nomeDaSala = "";
+
         for (let i = 0; i < this.salas.length; i++) { //fazendo busca do nome da sala no localStorage
             if (this.salas[i].id == id) {
+                nomeDaSala = this.salas[i].nome;
                 this.salas.splice(i, 1); //removemos a sala do array
                 localStorage.setItem('salas', JSON.stringify(this.salas));
                 this.getColection();
             }
         }
 
+
+        delete this.cadeiras[nomeDaSala];
+        localStorage.setItem('cadeiras', JSON.stringify(this.cadeiras));
+
+        this.getColection();
+
         this.createSalaTable();
 
 
     }
-
-    // ---------- CADEIRAS ----------
 
     // ---------- SESSÃO ----------
 
@@ -717,7 +739,7 @@ class GerenciadorCinema {
         for (let i = 0; i < this.filmes.length; i++) {
             let optionFilme = document.createElement("option");
             optionFilme.text = this.filmes[i].nome
-            optionFilme.value = this.filmes[i].id
+            optionFilme.value = this.filmes[i].nome
             filmesSessao.add(optionFilme);
         }
 
@@ -725,7 +747,7 @@ class GerenciadorCinema {
         for (let i = 0; i < this.salas.length; i++) {
             let optionSalas = document.createElement("option");
             optionSalas.text = this.salas[i].nome
-            optionSalas.value = this.salas[i].id
+            optionSalas.value = this.salas[i].nome
             salasSessao.add(optionSalas);
         }
 
@@ -783,6 +805,9 @@ class GerenciadorCinema {
         sessao.id = this.sessoesID;
         this.sessoesID++;
         localStorage.setItem('sessoesID', JSON.stringify(this.sessoesID));
+
+        sessao.nome = (sessao.filme + "  ||  " + sessao.idioma + "  ||  " + sessao.dimensao + "  ||  " + sessao.sala + "  ||  " + sessao.data + "  ||  " + sessao.horario);
+
         this.sessoes.push(sessao);
         localStorage.setItem('sessoes', JSON.stringify(this.sessoes));
         this.getColection();
@@ -1123,6 +1148,256 @@ class GerenciadorCinema {
 
     }
 
+    // ---------- CADEIRAS ----------
+
+    createCadeirasDaSala(nomeDaSala, totalCadeiras) {
+
+        // let arrayCadeira = [];
+        this.cadeiras[nomeDaSala] = [];
+
+        for (let i = 0; i < totalCadeiras; i++) {
+
+            let cadeira = {};
+            cadeira.numeracao = i + 1;
+            cadeira.cliente = null;
+            cadeira.ocupado = false;
+
+            this.cadeiras[nomeDaSala].push(cadeira);
+        }
+
+        console.log(this.cadeiras);
+        console.log(JSON.stringify(this.cadeiras));
+        localStorage.setItem('cadeiras', JSON.stringify(this.cadeiras));
+
+        this.getColection();
+
+    }
+
+    // ---------- RESERVAS ----------
+
+    fillReservaFields() {
+
+
+        let sessoesReserva = document.getElementById("sessao");
+        for (let i = 0; i < this.sessoes.length; i++) {
+            let optionSessao = document.createElement("option");
+            optionSessao.text = this.sessoes[i].nome
+            optionSessao.value = this.filmes[i].id
+            sessoesReserva.add(optionSessao);
+        }
+
+        let clienteReserva = document.getElementById("cliente");
+        for (let i = 0; i < this.clientes.length; i++) {
+            let optionCliente = document.createElement("option");
+            optionCliente.text = this.clientes[i].nome
+            optionCliente.value = this.clientes[i].id
+            clienteReserva.add(optionCliente);
+        }
+
+    }
+
+    fillReservaSeats() {
+
+    }
+
+    createReserva() {
+
+        let sessao = {};
+
+        this.getSessao(sessao);
+
+        if (this.verifySessao(sessao)) { //Se a sessao tiver os campos validos ira entrar
+            if (this.verifySessaoInLocalStorage(sessao)) { //Se a sessao não estiver no banco de dados ele ira entrar aqui para inserir
+                this.setSessaoInLocalStorage(sessao);
+                this.cleanSessaoField();
+                alert("O Cadastro foi realizado com Sucesso!");
+                this.createSessaoTable();
+            }
+        }
+    }
+
+    getReserva(reserva) {
+
+        sessao.filme = document.getElementById("filme_sessao").value;
+        sessao.idioma = document.getElementById("idioma_sessao").value;
+        sessao.dimensao = document.getElementById("dimensao_sessao").value;
+        sessao.sala = document.getElementById("sala_sessao").value;
+        sessao.data = document.getElementById("data_sessao").value;
+        sessao.horario = document.getElementById("horario_sessao").value;
+
+    }
+
+    verifyReserva(reserva) {
+
+        if (sessao.filme != "" &&
+            sessao.idioma != "" &&
+            sessao.dimensao != "" &&
+            sessao.sala != "" &&
+            sessao.data != "" &&
+            sessao.horario != "") {
+            return true
+        } else {
+            alert("Preencha Todos os campos corretamente!")
+            return false
+        }
+
+    }
+
+    verifyReservaInLocalStorage(reserva) {
+
+        return true
+    }
+
+    setReservaInLocalStorage(reserva) {
+        sessao.id = this.sessoesID;
+        this.sessoesID++;
+        localStorage.setItem('sessoesID', JSON.stringify(this.sessoesID));
+        this.sessoes.push(sessao);
+        localStorage.setItem('sessoes', JSON.stringify(this.sessoes));
+        this.getColection();
+    }
+
+    cleanReservaField() {
+
+        document.getElementById("filme_sessao").value = "";
+        document.getElementById("idioma_sessao").value = "";
+        document.getElementById("dimensao_sessao").value = "";
+        document.getElementById("sala_sessao").value = "";
+        document.getElementById("data_sessao").value = "";
+        document.getElementById("horario_sessao").value = "";
+
+    }
+
+    createReservaTable() {
+
+        let tabela = document.getElementById("sessao_tbody");
+
+        tabela.innerHTML = "";
+
+        if (this.sessoes != null && this.sessoes != undefined && this.sessoes != false && this.sessoes != "") {//se existir filme pra inserir na tabela entra aqui
+
+
+
+            for (let i = 0; i < this.sessoes.length; i++) {
+
+                let linha = tabela.insertRow();
+                linha.id = "linha-" + this.sessoes[i].id;
+
+                let colunaFilme = linha.insertCell();
+                let colunaIdioma = linha.insertCell();
+                let colunaDimensao = linha.insertCell();
+                let colunaSala = linha.insertCell();
+                let colunaData = linha.insertCell();
+                let colunaHorario = linha.insertCell();
+                let colunaEditar = linha.insertCell();
+                let colunaExcluir = linha.insertCell();
+
+                colunaFilme.innerText = this.sessoes[i].filme;
+                colunaIdioma.innerText = this.sessoes[i].idioma;
+                colunaDimensao.innerText = this.sessoes[i].dimensao;
+                colunaSala.innerText = this.sessoes[i].sala;
+                colunaData.innerText = this.sessoes[i].data;
+                colunaHorario.innerText = this.sessoes[i].horario;
+
+
+                let imgEditar = document.createElement("img");
+                imgEditar.src = "img/editar.png";
+                imgEditar.classList.add("img-table");
+                imgEditar.setAttribute(
+                    "onclick", `gerenciadorCinema.sessaoEdit(${this.sessoes[i].id})`
+                );
+
+                colunaEditar.appendChild(imgEditar);
+
+
+
+                let imgExcluir = document.createElement("img");
+                imgExcluir.src = "img/excluir.png";
+                imgExcluir.classList.add("img-table");
+                imgExcluir.setAttribute(
+                    "onclick", `gerenciadorCinema.sessaoRemove(${this.sessoes[i].id})`
+                );
+
+                colunaExcluir.appendChild(imgExcluir);
+
+
+            }
+
+        }
+    }
+
+    reservaEdit(id) {
+
+        let indexOnArray = "";
+        for (let i = 0; i < this.sessoes.length; i++) { //fazendo busca do nome da sessao no localStorage
+            if (this.sessoes[i].id == id) {
+                indexOnArray = i;
+            }
+        }
+
+
+        document.getElementById("filme_sessao").value = this.sessoes[indexOnArray].filme;
+        document.getElementById("idioma_sessao").value = this.sessoes[indexOnArray].idioma;
+        document.getElementById("dimensao_sessao").value = this.sessoes[indexOnArray].dimensao;
+        document.getElementById("sala_sessao").value = this.sessoes[indexOnArray].sala;
+        document.getElementById("data_sessao").value = this.sessoes[indexOnArray].data;
+        document.getElementById("horario_sessao").value = this.sessoes[indexOnArray].horario;
+
+        document.getElementById("btn-save").innerText = "Salvar Edição";
+        document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.saveSessaoEdit(${id})`);
+
+    }
+
+    saveReservaEdit(id) {
+
+        let indexOnArray = "";
+        for (let i = 0; i < this.sessoes.length; i++) { //fazendo busca do nome da sessao no localStorage
+            if (this.sessoes[i].id == id) {
+                indexOnArray = i;
+            }
+        }
+
+        let sessaoNova = {};
+        this.getSessao(sessaoNova);
+
+        if (this.verifySessao(sessaoNova)) {
+
+            this.sessoes[indexOnArray].filme = document.getElementById("filme_sessao").value;
+            this.sessoes[indexOnArray].idioma = document.getElementById("idioma_sessao").value;
+            this.sessoes[indexOnArray].dimensao = document.getElementById("dimensao_sessao").value;
+            this.sessoes[indexOnArray].sala = document.getElementById("sala_sessao").value;
+            this.sessoes[indexOnArray].data = document.getElementById("data_sessao").value;
+            this.sessoes[indexOnArray].horario = document.getElementById("horario_sessao").value;
+
+            document.getElementById("btn-save").innerText = "Salvar";
+            document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.createSessao()`);
+
+            localStorage.setItem('sessoes', JSON.stringify(this.sessoes));
+            this.getColection();
+
+            this.cleanSessaoField();
+
+            this.createSessaoTable();
+        }
+
+    }
+
+    reservaRemove(id) {
+
+        this.getColection();
+
+        for (let i = 0; i < this.sessoes.length; i++) { //fazendo busca do nome do filme n localStorage
+            if (this.sessoes[i].id == id) {
+                this.sessoes.splice(i, 1); //removemos a sessao do array
+                localStorage.setItem('sessoes', JSON.stringify(this.sessoes));
+                this.getColection();
+            }
+        }
+
+        this.createSessaoTable();
+
+
+    }
 
 
 
