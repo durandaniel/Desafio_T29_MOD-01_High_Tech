@@ -1152,21 +1152,33 @@ class GerenciadorCinema {
 
     createCadeirasDaSala(nomeDaSala, totalCadeiras) {
 
-        // let arrayCadeira = [];
-        this.cadeiras[nomeDaSala] = [];
+        this.cadeiras[nomeDaSala] = {};
 
-        for (let i = 0; i < totalCadeiras; i++) {
+        let numeroFileiras = "";
 
-            let cadeira = {};
-            cadeira.numeracao = i + 1;
-            cadeira.cliente = null;
-            cadeira.ocupado = false;
-
-            this.cadeiras[nomeDaSala].push(cadeira);
+        if (Math.trunc(totalCadeiras%10) != 0) {
+            numeroFileiras = Math.trunc(totalCadeiras / 10) + 1;
+        }
+        else {
+            numeroFileiras = Math.trunc(totalCadeiras/10);
         }
 
-        console.log(this.cadeiras);
-        console.log(JSON.stringify(this.cadeiras));
+        for (let i = 0; i < numeroFileiras; i++) {
+            let alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            this.cadeiras[nomeDaSala][alfabeto.charAt(i)] = [];
+
+
+            for (let j = 0; j < 10; j++) {
+
+                let cadeira = {};
+                cadeira.numeracao = j + 1;
+                cadeira.cliente = null;
+                cadeira.ocupado = false;
+
+                this.cadeiras[nomeDaSala][alfabeto.charAt(i)].push(cadeira);
+            }
+        }
+
         localStorage.setItem('cadeiras', JSON.stringify(this.cadeiras));
 
         this.getColection();
