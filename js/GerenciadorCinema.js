@@ -23,7 +23,12 @@ class GerenciadorCinema {
 
         // usuario
         this.usuarios = [];
+
         this.usersID = 0;
+        this.clientesID = 0;
+        this.salasID = 0;
+        this.sessoesID = 0;
+        this.filmesID = 0;
     }
 
     // gerenciadorCinema
@@ -57,6 +62,23 @@ class GerenciadorCinema {
         if (localStorage.getItem('usersID') == null)
             localStorage.setItem('usersID', JSON.stringify(this.usersID));
         this.usersID = JSON.parse(localStorage.getItem('usersID'));
+
+        if (localStorage.getItem('clientesID') == null)
+            localStorage.setItem('clientesID', JSON.stringify(this.clientesID));
+        this.clientesID = JSON.parse(localStorage.getItem('clientesID'));
+
+        if (localStorage.getItem('salasID') == null)
+            localStorage.setItem('salasID', JSON.stringify(this.salasID));
+        this.salasID = JSON.parse(localStorage.getItem('salasID'));
+
+        if (localStorage.getItem('sessoesID') == null)
+            localStorage.setItem('sessoesID', JSON.stringify(this.sessoesID));
+        this.sessoesID = JSON.parse(localStorage.getItem('sessoesID'));
+
+        if (localStorage.getItem('filmesID') == null)
+            localStorage.setItem('filmesID', JSON.stringify(this.filmesID));
+        this.filmesID = JSON.parse(localStorage.getItem('filmesID'));
+
     }
 
     verifyLogin() {
@@ -94,7 +116,7 @@ class GerenciadorCinema {
         window.location.href = 'index.html';
     }
 
-    indexOnArray(array, atributo, valorBuscado) {
+    indexOnArray(array, atributo, valorBuscado) { //ex: (this.usuarios, "nome", joao)
         let index = -1;
         for (let i = 0; i < array.length; i++) { //fazendo busca do nome do usuario n localStorage
             if (array[i][atributo] == valorBuscado) {
@@ -105,11 +127,197 @@ class GerenciadorCinema {
         return index;
     }
 
-    // cadeira
+    // ------------------------------------------------------------------ JS ------------------------------------------------------------------
 
     // cliente
 
+    createCliente() {
+        let cliente = {};
+
+        this.getCliente(cliente);
+
+        if (this.verifyCliente(cliente)) { //Se o cliente tiver os campos validos ira entrar
+            if (this.verifyClienteInLocalStorage(cliente)) { //Se o cliente não estiver no banco de dados ele ira entrar aqui para inserir
+                this.setClienteInLocalStorage(cliente);
+                this.cleanClienteField();
+                alert("O Cadastro foi realizado com Sucesso!");
+                this.createClienteTable();
+            }
+        }
+    }
+
+    getCliente(cliente) {
+
+        cliente.nome = document.getElementById("nome_cliente").value;
+        cliente.idade = document.getElementById("idade_cliente").value;
+        cliente.email = document.getElementById("email_cliente").value;
+
+    }
+
+    verifyCliente(cliente) {
+
+        if (cliente.nome != "" &&
+            cliente.idade != "" &&
+            cliente.email != "") {
+            return true
+        } else {
+            alert("Preencha Todos os campos corretamente!")
+            return false
+        }
+
+    }
+
+    verifyClienteInLocalStorage(cliente) {
+
+        if (this.clientes != null && this.clientes != undefined && this.clientes != false && this.clientes != "") { //se não existir banco de dados quer dizer que o cliente pode ser criado e já retorna true; se existir clientes já cadastrados ele entra no if e vamos verificar se ele já foi cadastrado
+
+            for (let i = 0; i < this.clientes.length; i++) { //fazendo busca do nome do cliente no localStorage
+                if (this.clientes[i].email == cliente.email) {
+                    alert("Este Email Já existe, escolha outro! Verifique se o Usuário ja existe!")
+                    return false; //retorna que ja existe cliente com esse email
+                }
+            }
+        }
+
+        return true
+    }
+
+    setClienteInLocalStorage(cliente) {
+        cliente.id = this.clientesID;
+        this.clientesID++;
+        localStorage.setItem('clientesID', JSON.stringify(this.clientesID));
+        this.clientes.push(cliente);
+        localStorage.setItem('clientes', JSON.stringify(this.clientes));
+        this.getColection();
+    }
+
+    cleanClienteField() {
+        document.getElementById("nome_cliente").value = "";
+        document.getElementById("idade_cliente").value = "";
+        document.getElementById("email_cliente").value = "";
+    }
+
+    createClienteTable() {
+
+        let tabela = document.getElementById("cliente_tbody");
+
+        tabela.innerHTML = "";
+
+        if (this.clientes != null && this.clientes != undefined && this.clientes != false && this.clientes != "") {//se existir cliente pra inserir na tabela entra aqui
+
+
+
+            for (let i = 0; i < this.clientes.length; i++) {
+
+                let linha = tabela.insertRow();
+                linha.id = "linha-" + this.clientes[i].id;
+
+                let colunaNome = linha.insertCell();
+                let colunaIdade = linha.insertCell();
+                let colunaEmail = linha.insertCell();
+                let colunaEditar = linha.insertCell();
+                let colunaExcluir = linha.insertCell();
+
+                colunaNome.innerText = this.clientes[i].nome;
+                colunaIdade.innerText = this.clientes[i].idade;
+                colunaEmail.innerText = this.clientes[i].email;
+
+
+                let imgEditar = document.createElement("img");
+                imgEditar.src = "img/editar.png";
+                imgEditar.classList.add("img-table");
+                imgEditar.setAttribute(
+                    "onclick", `gerenciadorCinema.clienteEdit(${this.clientes[i].id})`
+                );
+
+                colunaEditar.appendChild(imgEditar);
+
+
+
+                let imgExcluir = document.createElement("img");
+                imgExcluir.src = "img/excluir.png";
+                imgExcluir.classList.add("img-table");
+                imgExcluir.setAttribute(
+                    "onclick", `gerenciadorCinema.clienteRemove(${this.clientes[i].id})`
+                );
+
+                colunaExcluir.appendChild(imgExcluir);
+
+
+            }
+
+        }
+    }
+
+    clienteEdit(id) {
+
+        let indexOnArray = "";
+        for (let i = 0; i < this.clientes.length; i++) { //fazendo busca do nome do cliente n localStorage
+            if (this.clientes[i].id == id) {
+                indexOnArray = i;
+            }
+        }
+
+        document.getElementById("nome_cliente").value = this.clientes[indexOnArray].nome;
+        document.getElementById("idade_cliente").value = this.clientes[indexOnArray].idade;
+        document.getElementById("email_cliente").value = this.clientes[indexOnArray].email;
+
+        document.getElementById("btn-save").innerText = "Salvar Edição";
+        document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.saveClienteEdit(${id})`);
+
+    }
+
+    saveClienteEdit(id) {
+
+        let indexOnArray = "";
+        for (let i = 0; i < this.clientes.length; i++) { //fazendo busca do nome do cliente n localStorage
+            if (this.clientes[i].id == id) {
+                indexOnArray = i;
+            }
+        }
+
+        let clienteNovo = {};
+        this.getCliente(clienteNovo);
+
+        if (this.verifyCliente(clienteNovo)) {
+
+            this.clientes[indexOnArray].nome = document.getElementById("nome_cliente").value;
+            this.clientes[indexOnArray].idade = document.getElementById("idade_cliente").value;
+            this.clientes[indexOnArray].email = document.getElementById("email_cliente").value;
+
+            document.getElementById("btn-save").innerText = "Salvar";
+            document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.createCliente()`);
+
+            localStorage.setItem('clientes', JSON.stringify(this.clientes));
+            this.getColection();
+
+            this.cleanClienteField();
+
+            this.createClienteTable();
+        }
+
+    }
+
+    clienteRemove(id) {
+
+        this.getColection();
+
+        for (let i = 0; i < this.clientes.length; i++) { //fazendo busca do nome do cliente n localStorage
+            if (this.clientes[i].id == id) {
+                this.clientes.splice(i, 1); //removemos o cliente do array
+                localStorage.setItem('clientes', JSON.stringify(this.clientes));
+                this.getColection();
+            }
+        }
+
+        this.createClienteTable();
+
+
+    }
+
     // filme
+
+    // cadeira
 
     // sala
 
@@ -289,6 +497,7 @@ class GerenciadorCinema {
 
             this.createUsersTable();
         }
+
     }
 
     userRemove(id) {
@@ -306,6 +515,13 @@ class GerenciadorCinema {
         this.createUsersTable();
 
     }
+
+
+
+
+
+
+
 
 }
 
