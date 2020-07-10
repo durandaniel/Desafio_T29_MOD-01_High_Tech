@@ -32,7 +32,7 @@ class GerenciadorCinema {
         this.filmesID = 0;
     }
 
-    // gerenciadorCinema
+    // ---------- GERENCIADOR CINEMA ----------
 
     getColection() {
 
@@ -91,7 +91,7 @@ class GerenciadorCinema {
         }
     }
 
-    //Login
+    // ---------- LOGIN 
 
     checkLogin() {
 
@@ -111,7 +111,8 @@ class GerenciadorCinema {
 
     }
 
-    //logout
+    // ---------- LOGOUT 
+
     logout() {
         localStorage.setItem('logged', false);
         window.location.href = 'index.html';
@@ -590,7 +591,7 @@ class GerenciadorCinema {
     createSalaTable() {
 
         let tabela = document.getElementById("sala_tbody");
-        
+
         tabela.innerHTML = "";
 
         if (this.salas != null && this.salas != undefined && this.salas != false && this.salas != "") {//se existir sala pra inserir na tabela entra aqui
@@ -708,6 +709,226 @@ class GerenciadorCinema {
     // ---------- CADEIRAS ----------
 
     // ---------- SESSÃO ----------
+
+    fillSessaoFields() {
+
+
+        let filmesSessao = document.getElementById("filme_sessao");
+        for (let i = 0; i < this.filmes.length; i++) {
+            let optionFilme = document.createElement("option");
+            optionFilme.text = this.filmes[i].nome
+            optionFilme.value = this.filmes[i].id
+            filmesSessao.add(optionFilme);
+        }
+
+        let salasSessao = document.getElementById("sala_sessao");
+        for (let i = 0; i < this.salas.length; i++) {
+            let optionSalas = document.createElement("option");
+            optionSalas.text = this.salas[i].nome
+            optionSalas.value = this.salas[i].id
+            salasSessao.add(optionSalas);
+        }
+
+    }
+
+    createSessao() {
+
+        let sessao = {};
+
+        this.getSessao(sessao);
+
+        if (this.verifySessao(sessao)) { //Se a sessao tiver os campos validos ira entrar
+            if (this.verifySessaoInLocalStorage(sessao)) { //Se a sessao não estiver no banco de dados ele ira entrar aqui para inserir
+                this.setSessaoInLocalStorage(sessao);
+                this.cleanSessaoField();
+                alert("O Cadastro foi realizado com Sucesso!");
+                this.createSessaoTable();
+            }
+        }
+    }
+
+    getSessao(sessao) {
+
+        sessao.filme = document.getElementById("filme_sessao").value;
+        sessao.idioma = document.getElementById("idioma_sessao").value;
+        sessao.dimensao = document.getElementById("dimensao_sessao").value;
+        sessao.sala = document.getElementById("sala_sessao").value;
+        sessao.data = document.getElementById("data_sessao").value;
+        sessao.horario = document.getElementById("horario_sessao").value;
+
+    }
+
+    verifySessao(sessao) {
+
+        if (sessao.filme != "" &&
+            sessao.idioma != "" &&
+            sessao.dimensao != "" &&
+            sessao.sala != "" &&
+            sessao.data != "" &&
+            sessao.horario != "") {
+            return true
+        } else {
+            alert("Preencha Todos os campos corretamente!")
+            return false
+        }
+
+    }
+
+    verifySessaoInLocalStorage(sessao) {
+
+        return true
+    }
+
+    setSessaoInLocalStorage(sessao) {
+        sessao.id = this.sessoesID;
+        this.sessoesID++;
+        localStorage.setItem('sessoesID', JSON.stringify(this.sessoesID));
+        this.sessoes.push(sessao);
+        localStorage.setItem('sessoes', JSON.stringify(this.sessoes));
+        this.getColection();
+    }
+
+    cleanSessaoField() {
+
+        document.getElementById("filme_sessao").value = "";
+        document.getElementById("idioma_sessao").value = "";
+        document.getElementById("dimensao_sessao").value = "";
+        document.getElementById("sala_sessao").value = "";
+        document.getElementById("data_sessao").value = "";
+        document.getElementById("horario_sessao").value = "";
+
+    }
+
+    createSessaoTable() {
+
+        let tabela = document.getElementById("sessao_tbody");
+
+        tabela.innerHTML = "";
+
+        if (this.sessoes != null && this.sessoes != undefined && this.sessoes != false && this.sessoes != "") {//se existir filme pra inserir na tabela entra aqui
+
+
+
+            for (let i = 0; i < this.sessoes.length; i++) {
+
+                let linha = tabela.insertRow();
+                linha.id = "linha-" + this.sessoes[i].id;
+
+                let colunaFilme = linha.insertCell();
+                let colunaIdioma = linha.insertCell();
+                let colunaDimensao = linha.insertCell();
+                let colunaSala = linha.insertCell();
+                let colunaData = linha.insertCell();
+                let colunaHorario = linha.insertCell();
+                let colunaEditar = linha.insertCell();
+                let colunaExcluir = linha.insertCell();
+
+                colunaFilme.innerText = this.sessoes[i].filme;
+                colunaIdioma.innerText = this.sessoes[i].idioma;
+                colunaDimensao.innerText = this.sessoes[i].dimensao;
+                colunaSala.innerText = this.sessoes[i].sala;
+                colunaData.innerText = this.sessoes[i].data;
+                colunaHorario.innerText = this.sessoes[i].horario;
+
+
+                let imgEditar = document.createElement("img");
+                imgEditar.src = "img/editar.png";
+                imgEditar.classList.add("img-table");
+                imgEditar.setAttribute(
+                    "onclick", `gerenciadorCinema.sessaoEdit(${this.sessoes[i].id})`
+                );
+
+                colunaEditar.appendChild(imgEditar);
+
+
+
+                let imgExcluir = document.createElement("img");
+                imgExcluir.src = "img/excluir.png";
+                imgExcluir.classList.add("img-table");
+                imgExcluir.setAttribute(
+                    "onclick", `gerenciadorCinema.sessaoRemove(${this.sessoes[i].id})`
+                );
+
+                colunaExcluir.appendChild(imgExcluir);
+
+
+            }
+
+        }
+    }
+
+    sessaoEdit(id) {
+
+        let indexOnArray = "";
+        for (let i = 0; i < this.sessoes.length; i++) { //fazendo busca do nome da sessao no localStorage
+            if (this.sessoes[i].id == id) {
+                indexOnArray = i;
+            }
+        }
+
+
+        document.getElementById("filme_sessao").value = this.sessoes[indexOnArray].filme;
+        document.getElementById("idioma_sessao").value = this.sessoes[indexOnArray].idioma;
+        document.getElementById("dimensao_sessao").value = this.sessoes[indexOnArray].dimensao;
+        document.getElementById("sala_sessao").value = this.sessoes[indexOnArray].sala;
+        document.getElementById("data_sessao").value = this.sessoes[indexOnArray].data;
+        document.getElementById("horario_sessao").value = this.sessoes[indexOnArray].horario;
+
+        document.getElementById("btn-save").innerText = "Salvar Edição";
+        document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.saveSessaoEdit(${id})`);
+
+    }
+
+    saveSessaoEdit(id) {
+
+        let indexOnArray = "";
+        for (let i = 0; i < this.sessoes.length; i++) { //fazendo busca do nome da sessao no localStorage
+            if (this.sessoes[i].id == id) {
+                indexOnArray = i;
+            }
+        }
+
+        let sessaoNova = {};
+        this.getSessao(sessaoNova);
+
+        if (this.verifySessao(sessaoNova)) {
+
+            this.sessoes[indexOnArray].filme = document.getElementById("filme_sessao").value;
+            this.sessoes[indexOnArray].idioma = document.getElementById("idioma_sessao").value;
+            this.sessoes[indexOnArray].dimensao = document.getElementById("dimensao_sessao").value;
+            this.sessoes[indexOnArray].sala = document.getElementById("sala_sessao").value;
+            this.sessoes[indexOnArray].data = document.getElementById("data_sessao").value;
+            this.sessoes[indexOnArray].horario = document.getElementById("horario_sessao").value;
+
+            document.getElementById("btn-save").innerText = "Salvar";
+            document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.createSessao()`);
+
+            localStorage.setItem('sessoes', JSON.stringify(this.sessoes));
+            this.getColection();
+
+            this.cleanSessaoField();
+
+            this.createSessaoTable();
+        }
+
+    }
+
+    sessaoRemove(id) {
+
+        this.getColection();
+
+        for (let i = 0; i < this.sessoes.length; i++) { //fazendo busca do nome do filme n localStorage
+            if (this.sessoes[i].id == id) {
+                this.sessoes.splice(i, 1); //removemos a sessao do array
+                localStorage.setItem('sessoes', JSON.stringify(this.sessoes));
+                this.getColection();
+            }
+        }
+
+        this.createSessaoTable();
+
+
+    }
 
     // ---------- USUARIO ----------
 

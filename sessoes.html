@@ -11,7 +11,7 @@
     <script>window.onload = gerenciadorCinema.getColection()</script>
 </head>
 
-<body>
+<body onload="gerenciadorCinema.createSessaoTable(); gerenciadorCinema.fillSessaoFields()">
 
     <div class="wrapper">
 
@@ -38,55 +38,59 @@
 
                 <div class="flex flex-column align-center total-height total-width">
 
-                    <h2>NOVA SESSAO</h2>
+                    <h2>NOVA SESSÃO</h2>
                     <div class="flex flex-column">
 
 
                         <div class="flex flex-row space-between">
                             <label for="filme_sessao">Filme da Sessão</label>
-                            <select name="" id="">
-                                <option value="">default</option>
-                            </select>
-                        </div>
-
-                        <div class="flex flex-row space-between">
-                            <label for="sala_sessao">Sala da Sessão</label>
-                            <select name="" id="">
-                                <option value="">default</option>
+                            <select name="" id="filme_sessao">
+                                <option value="">Escolha</option>
                             </select>
                         </div>
 
                         <div class="flex flex-row space-between">
                             <label for="idioma_sessao">Dublado/Legendado</label>
-                            <select name="" id="">
-                                <option value="">default</option>
+                            <select name="" id="idioma_sessao">
+                                <option value="">Escolha</option>
+                                <option value="dub">Dublado</option>
+                                <option value="leg">Legendado</option>
                             </select>
                         </div>
 
                         <div class="flex flex-row space-between">
-                            <label for="idioma_sessao">3D/2D</label>
-                            <select name="" id="">
-                                <option value="">default</option>
+                            <label for="dimensao_sessao">3D/2D</label>
+                            <select name="" id="dimensao_sessao">
+                                <option value="">Escolha</option>
+                                <option value="2d">2D</option>
+                                <option value="3d">3D</option>
+                            </select>
+                        </div>
+
+                        <div class="flex flex-row space-between">
+                            <label for="sala_sessao">Sala da Sessão</label>
+                            <select name="" id="sala_sessao">
+                                <option value="">Escolha</option>
                             </select>
                         </div>
 
                         <div class="flex flex-row space-between">
                             <label for="data_sessao">Data da Sessão</label>
-                            <input type="text" placeholder="Data da Sessão" id="data_sessao">
+                            <input type="date" placeholder="Data da Sessão" id="data_sessao">
                         </div>
 
                         <div class="flex flex-row space-between">
                             <label for="horario_sessao">Horário de início</label>
-                            <input type="text" placeholder="Horário de início da Sessão" id="horario_sessao">
+                            <input type="time" placeholder="Horário de início da Sessão" id="horario_sessao">
                         </div>
 
                         <div class="flex justify-center">
                             <div>
-                                <button class="btn btn-save">Salvar</button>
+                                <button class="btn btn-save" id="btn-save" onclick="gerenciadorCinema.createSessao()">Salvar</button>
                             </div>
 
                             <div>
-                                <button class="btn btn-red">Cancelar</button>
+                                <button class="btn btn-red" onclick="gerenciadorCinema.cleanSessaoField()">Limpar</button>
                             </div>
 
                         </div>
@@ -113,7 +117,7 @@
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody id="sessao_tbody">
                         </tbody>
                     </table>
                 </div>
