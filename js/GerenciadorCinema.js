@@ -110,7 +110,9 @@ class GerenciadorCinema {
     // usuario
 
     createUsuario() {
-        let usuario = this.getUsuario();
+        let usuario = {};
+
+        this.getUsuario(usuario);
 
         if (this.verifyUsuario(usuario)) { //Se o usuario tiver os campos validos ira entrar
             if (this.verifyUsuarioInLocalStorage(usuario)) { //Se o usuario não estiver no banco de dados ele ira entrar aqui para inserir
@@ -120,23 +122,15 @@ class GerenciadorCinema {
                 window.location.href = 'login.html'
             }
         }
-        else {
-            alert("Preencha Todos os campos corretamente!")
-        }
     }
 
-    getUsuario() {
-
-        let usuario = {};
+    getUsuario(usuario) {
 
         usuario.nome = document.getElementById("nome_usuario").value;
         usuario.email = document.getElementById("email_usuario").value;
         usuario.username = document.getElementById("username").value;
         usuario.senha = document.getElementById("senha").value;
 
-
-
-        return usuario;
     }
 
     verifyUsuario(usuario) {
@@ -146,8 +140,12 @@ class GerenciadorCinema {
             usuario.username != "" &&
             usuario.senha != "") {
             return true
-        } else false
+        } else {
+            alert("Preencha Todos os campos corretamente!")
+            return false
+        }
     }
+
 
     verifyUsuarioInLocalStorage(usuario) { //retorna true se não estiver no banco local storage
 
@@ -238,10 +236,17 @@ class GerenciadorCinema {
 
     userEdit(id) {
 
-        document.getElementById("nome_usuario").value = this.usuarios[id].nome;
-        document.getElementById("email_usuario").value = this.usuarios[id].email;
-        document.getElementById("username").value = this.usuarios[id].username;
-        document.getElementById("senha").value = this.usuarios[id].senha;
+        let indexOnArray = "";
+        for (let i = 0; i < this.usuarios.length; i++) { //fazendo busca do nome do usuario n localStorage
+            if (this.usuarios[i].id == id) {
+                indexOnArray = i;
+            }
+        }
+
+        document.getElementById("nome_usuario").value = this.usuarios[indexOnArray].nome;
+        document.getElementById("email_usuario").value = this.usuarios[indexOnArray].email;
+        document.getElementById("username").value = this.usuarios[indexOnArray].username;
+        document.getElementById("senha").value = this.usuarios[indexOnArray].senha;
 
         document.getElementById("btn-save").innerText = "Salvar Edição";
         document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.saveUserEdit(${id})`);
@@ -250,20 +255,33 @@ class GerenciadorCinema {
 
     saveUserEdit(id) {
 
-        this.usuarios[id].nome = document.getElementById("nome_usuario").innerText;
-        this.usuarios[id].email = document.getElementById("email_usuario").value;
-        this.usuarios[id].username = document.getElementById("username").value;
-        this.usuarios[id].senha = document.getElementById("senha").value;
+        let indexOnArray = "";
+        for (let i = 0; i < this.usuarios.length; i++) { //fazendo busca do nome do usuario n localStorage
+            if (this.usuarios[i].id == id) {
+                indexOnArray = i;
+            }
+        }
 
-        document.getElementById("btn-save").innerText = "Salvar";
-        document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.userEdit(${id})`);
+        let usuarioNovo = {};
+        this.getUsuario(usuarioNovo);
 
-        localStorage.setItem('usuarios', JSON.stringify(this.usuarios));
-        this.getColection();
+        if (this.verifyUsuario(usuarioNovo)) {
 
-        this.cleanUserField();
+            this.usuarios[indexOnArray].nome = document.getElementById("nome_usuario").value;
+            this.usuarios[indexOnArray].email = document.getElementById("email_usuario").value;
+            this.usuarios[indexOnArray].username = document.getElementById("username").value;
+            this.usuarios[indexOnArray].senha = document.getElementById("senha").value;
 
-        this.createUsersTable();
+            document.getElementById("btn-save").innerText = "Salvar";
+            document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.userEdit(${id})`);
+
+            localStorage.setItem('usuarios', JSON.stringify(this.usuarios));
+            this.getColection();
+
+            this.cleanUserField();
+
+            this.createUsersTable();
+        }
     }
 
     userRemove(id) {
@@ -281,9 +299,6 @@ class GerenciadorCinema {
         this.createUsersTable();
 
     }
-
-
-
 
 }
 
