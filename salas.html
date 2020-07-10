@@ -11,7 +11,7 @@
     <script>window.onload = gerenciadorCinema.getColection()</script>
 </head>
 
-<body>
+<body onload="gerenciadorCinema.createSalaTable()">
 
     <div class="wrapper">
 
@@ -44,26 +44,26 @@
 
                         <div class="flex flex-row space-between">
                             <label for="nome_cliente">Nome da sala</label>
-                            <input type="text" placeholder="Nome da sala" id="nome_cliente">
+                            <input type="text" placeholder="Nome da sala" id="nome_sala">
                         </div>
 
                         <div class="flex flex-row space-between">
                             <label for="fileiras">Fileiras na Sala</label>
-                            <input type="number" placeholder="6" id="fileiras" disabled>
+                            <input type="number" placeholder="6" id="fileiras" disabled value="6">
                         </div>
 
                         <div class="flex flex-row space-between">
                             <label for="ecadeira_por_fileira">Cadeiras por Fileira</label>
-                            <input type="number" placeholder="10" id="ecadeira_por_fileira" disabled>
+                            <input type="number" placeholder="10" id="cadeira_por_fileira" value="10" disabled>
                         </div>
 
                         <div class="flex justify-center">
                             <div>
-                                <button class="btn btn-save">Salvar</button>
+                                <button class="btn btn-save" id="btn-save" onclick="gerenciadorCinema.createSala()">Salvar</button>
                             </div>
 
                             <div>
-                                <button class="btn btn-red">Cancelar</button>
+                                <button class="btn btn-red" onclick="gerenciadorCinema.cleanSalaField()">Limpar</button>
                             </div>
 
                         </div>
@@ -88,7 +88,7 @@
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody id="sala_tbody">
                         </tbody>
                     </table>
                 </div>

@@ -24,6 +24,7 @@ class GerenciadorCinema {
         // usuario
         this.usuarios = [];
 
+        // IDs
         this.usersID = 0;
         this.clientesID = 0;
         this.salasID = 0;
@@ -127,9 +128,9 @@ class GerenciadorCinema {
         return index;
     }
 
-    // ------------------------------------------------------------------ JS ------------------------------------------------------------------
+    // ------------------------------------------------------------------ JS MODULE ------------------------------------------------------------------
 
-    // ----- cliente
+    // ---------- CLIENTE ----------
 
     createCliente() {
         let cliente = {};
@@ -315,7 +316,7 @@ class GerenciadorCinema {
 
     }
 
-    // ----- filme
+    // ---------- FILMES ----------
 
     createFilme() {
         let filme = {};
@@ -515,13 +516,200 @@ class GerenciadorCinema {
 
     }
 
-    // ----- cadeira
+    // ---------- SALAS ----------
 
-    // ----- sala
+    createSala() {
 
-    // ----- sessao
+        let sala = {};
 
-    // ----- usuario
+        this.getSala(sala);
+
+        if (this.verifySala(sala)) { //Se o cliente tiver os campos validos ira entrar
+            if (this.verifySalaInLocalStorage(sala)) { //Se o cliente não estiver no banco de dados ele ira entrar aqui para inserir
+                this.setSalaInLocalStorage(sala);
+                this.cleanSalaField();
+                alert("O Cadastro foi realizado com Sucesso!");
+                this.createSalaTable();
+            }
+        }
+    }
+
+    getSala(sala) {
+
+        sala.nome = document.getElementById("nome_sala").value;
+        sala.fileiras = 6;
+        sala.cadeiras = 10;
+        // sala.fileiras = document.getElementById("fileiras").value;
+        // sala.cadeiras = document.getElementById("cadeira_por_fileira").value;
+
+    }
+
+    verifySala(sala) {
+
+        if (sala.nome != "" &&
+            sala.fileiras != "" &&
+            sala.cadeiras != "") {
+            return true
+        } else {
+            alert("Preencha Todos os campos corretamente!")
+            return false
+        }
+
+    }
+
+    verifySalaInLocalStorage(sala) {
+
+        if (this.salas != null && this.salas != undefined && this.salas != false && this.salas != "") { //se não existir banco de dados quer dizer que o sala pode ser criado e já retorna true; se existir clientes já cadastrados ele entra no if e vamos verificar se ele já foi cadastrado
+
+            for (let i = 0; i < this.salas.length; i++) { //fazendo busca do nome do sala no localStorage
+                if (this.salas[i].nome == sala.nome) {
+                    alert("Este Nome Já existe, escolha outro!")
+                    return false; //retorna que ja existe filme com esse email
+                }
+            }
+        }
+
+        return true
+    }
+
+    setSalaInLocalStorage(sala) {
+        sala.id = this.salasID;
+        this.salasID++;
+        localStorage.setItem('salasID', JSON.stringify(this.salasID));
+        this.salas.push(sala);
+        localStorage.setItem('salas', JSON.stringify(this.salas));
+        this.getColection();
+    }
+
+    cleanSalaField() {
+        document.getElementById("nome_sala").value = "";
+        document.getElementById("fileiras").value = "";
+        document.getElementById("cadeira_por_fileira").value = "";
+    }
+
+    createSalaTable() {
+
+        let tabela = document.getElementById("sala_tbody");
+        
+        tabela.innerHTML = "";
+
+        if (this.salas != null && this.salas != undefined && this.salas != false && this.salas != "") {//se existir sala pra inserir na tabela entra aqui
+
+
+
+            for (let i = 0; i < this.salas.length; i++) {
+
+                let linha = tabela.insertRow();
+                linha.id = "linha-" + this.salas[i].id;
+
+                let colunaNome = linha.insertCell();
+                let colunaFileiras = linha.insertCell();
+                let colunaCadeiras = linha.insertCell();
+                let colunaEditar = linha.insertCell();
+                let colunaExcluir = linha.insertCell();
+
+                colunaNome.innerText = this.salas[i].nome;
+                colunaFileiras.innerText = this.salas[i].fileiras;
+                colunaCadeiras.innerText = this.salas[i].cadeiras;
+
+
+                let imgEditar = document.createElement("img");
+                imgEditar.src = "img/editar.png";
+                imgEditar.classList.add("img-table");
+                imgEditar.setAttribute(
+                    "onclick", `gerenciadorCinema.salaEdit(${this.salas[i].id})`
+                );
+
+                colunaEditar.appendChild(imgEditar);
+
+
+
+                let imgExcluir = document.createElement("img");
+                imgExcluir.src = "img/excluir.png";
+                imgExcluir.classList.add("img-table");
+                imgExcluir.setAttribute(
+                    "onclick", `gerenciadorCinema.salaRemove(${this.salas[i].id})`
+                );
+
+                colunaExcluir.appendChild(imgExcluir);
+
+
+            }
+
+        }
+    }
+
+    salaEdit(id) {
+
+        let indexOnArray = "";
+        for (let i = 0; i < this.salas.length; i++) { //fazendo busca do nome do sala no localStorage
+            if (this.salas[i].id == id) {
+                indexOnArray = i;
+            }
+        }
+
+        document.getElementById("nome_sala").value = this.salas[indexOnArray].nome;
+        document.getElementById("fileiras").value = this.salas[indexOnArray].fileiras;
+        document.getElementById("cadeira_por_fileira").value = this.salas[indexOnArray].cadeiras;
+
+        document.getElementById("btn-save").innerText = "Salvar Edição";
+        document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.saveSalaEdit(${id})`);
+
+    }
+
+    saveSalaEdit(id) {
+
+        let indexOnArray = "";
+        for (let i = 0; i < this.salas.length; i++) { //fazendo busca do nome da sala no localStorage
+            if (this.salas[i].id == id) {
+                indexOnArray = i;
+            }
+        }
+
+        let salaNova = {};
+        this.getSala(salaNova);
+
+        if (this.verifySala(salaNova)) {
+
+            this.salas[indexOnArray].nome = document.getElementById("nome_sala").value
+            this.salas[indexOnArray].fileiras = document.getElementById("fileiras").value
+            this.salas[indexOnArray].cadeiras = document.getElementById("cadeira_por_fileira").value
+
+            document.getElementById("btn-save").innerText = "Salvar";
+            document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.createSala()`);
+
+            localStorage.setItem('salas', JSON.stringify(this.salas));
+            this.getColection();
+
+            this.cleanSalaField();
+
+            this.createSalaTable();
+        }
+
+    }
+
+    salaRemove(id) {
+
+        this.getColection();
+
+        for (let i = 0; i < this.salas.length; i++) { //fazendo busca do nome da sala no localStorage
+            if (this.salas[i].id == id) {
+                this.salas.splice(i, 1); //removemos a sala do array
+                localStorage.setItem('salas', JSON.stringify(this.salas));
+                this.getColection();
+            }
+        }
+
+        this.createSalaTable();
+
+
+    }
+
+    // ---------- CADEIRAS ----------
+
+    // ---------- SESSÃO ----------
+
+    // ---------- USUARIO ----------
 
     createUsuario() {
         let usuario = {};
