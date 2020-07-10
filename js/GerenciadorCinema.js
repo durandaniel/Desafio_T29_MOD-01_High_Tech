@@ -129,7 +129,7 @@ class GerenciadorCinema {
 
     // ------------------------------------------------------------------ JS ------------------------------------------------------------------
 
-    // cliente
+    // ----- cliente
 
     createCliente() {
         let cliente = {};
@@ -315,15 +315,213 @@ class GerenciadorCinema {
 
     }
 
-    // filme
+    // ----- filme
 
-    // cadeira
+    createFilme() {
+        let filme = {};
 
-    // sala
+        this.getFilme(filme);
 
-    // sessao
+        if (this.verifyFilme(filme)) { //Se o cliente tiver os campos validos ira entrar
+            if (this.verifyFilmeInLocalStorage(filme)) { //Se o cliente não estiver no banco de dados ele ira entrar aqui para inserir
+                this.setFilmeInLocalStorage(filme);
+                this.cleanFilmeField();
+                alert("O Cadastro foi realizado com Sucesso!");
+                this.createFilmeTable();
+            }
+        }
+    }
 
-    // usuario
+    getFilme(filme) {
+
+        filme.nome = document.getElementById("nome_filme").value;
+        filme.duracao = document.getElementById("duracao_filme").value;
+        filme.faixa_etaria = document.getElementById("faixa_etaria").value;
+        filme.genero = document.getElementById("genero_filme").value;
+        filme.sinopse = document.getElementById("sinopse_filme").value;
+
+    }
+
+    verifyFilme(filme) {
+
+        if (filme.nome != "" &&
+            filme.duracao != "" &&
+            filme.faixa_etaria != "" &&
+            filme.genero != "" &&
+            filme.sinopse != "") {
+            return true
+        } else {
+            alert("Preencha Todos os campos corretamente!")
+            return false
+        }
+
+    }
+
+    verifyFilmeInLocalStorage(filme) {
+
+        if (this.filmes != null && this.filmes != undefined && this.filmes != false && this.filmes != "") { //se não existir banco de dados quer dizer que o filme pode ser criado e já retorna true; se existir clientes já cadastrados ele entra no if e vamos verificar se ele já foi cadastrado
+
+            for (let i = 0; i < this.filmes.length; i++) { //fazendo busca do nome do filme no localStorage
+                if (this.filmes[i].nome == filme.nome) {
+                    alert("Este Nome Já existe, escolha outro!")
+                    return false; //retorna que ja existe filme com esse email
+                }
+            }
+        }
+
+        return true
+    }
+
+    setFilmeInLocalStorage(filme) {
+        filme.id = this.filmesID;
+        this.filmesID++;
+        localStorage.setItem('filmesID', JSON.stringify(this.filmesID));
+        this.filmes.push(filme);
+        localStorage.setItem('filmes', JSON.stringify(this.filmes));
+        this.getColection();
+    }
+
+    cleanFilmeField() {
+        document.getElementById("nome_filme").value = "";
+        document.getElementById("duracao_filme").value = "";
+        document.getElementById("faixa_etaria").value = "";
+        document.getElementById("genero_filme").value = "";
+        document.getElementById("sinopse_filme").value = "";
+    }
+
+    createFilmeTable() {
+
+        let tabela = document.getElementById("filme_tbody");
+
+        tabela.innerHTML = "";
+
+        if (this.filmes != null && this.filmes != undefined && this.filmes != false && this.filmes != "") {//se existir filme pra inserir na tabela entra aqui
+
+
+
+            for (let i = 0; i < this.filmes.length; i++) {
+
+                let linha = tabela.insertRow();
+                linha.id = "linha-" + this.filmes[i].id;
+
+                let colunaNome = linha.insertCell();
+                let colunaDuracao = linha.insertCell();
+                let colunaFaixa_etaria = linha.insertCell();
+                let colunaGenero = linha.insertCell();
+                let colunaSinopse = linha.insertCell();
+                let colunaEditar = linha.insertCell();
+                let colunaExcluir = linha.insertCell();
+
+                colunaNome.innerText = this.filmes[i].nome;
+                colunaDuracao.innerText = this.filmes[i].duracao;
+                colunaFaixa_etaria.innerText = this.filmes[i].faixa_etaria;
+                colunaGenero.innerText = this.filmes[i].genero;
+                colunaSinopse.innerText = this.filmes[i].sinopse;
+
+
+                let imgEditar = document.createElement("img");
+                imgEditar.src = "img/editar.png";
+                imgEditar.classList.add("img-table");
+                imgEditar.setAttribute(
+                    "onclick", `gerenciadorCinema.filmeEdit(${this.filmes[i].id})`
+                );
+
+                colunaEditar.appendChild(imgEditar);
+
+
+
+                let imgExcluir = document.createElement("img");
+                imgExcluir.src = "img/excluir.png";
+                imgExcluir.classList.add("img-table");
+                imgExcluir.setAttribute(
+                    "onclick", `gerenciadorCinema.filmeRemove(${this.filmes[i].id})`
+                );
+
+                colunaExcluir.appendChild(imgExcluir);
+
+
+            }
+
+        }
+    }
+
+    filmeEdit(id) {
+
+        let indexOnArray = "";
+        for (let i = 0; i < this.filmes.length; i++) { //fazendo busca do nome do filme no localStorage
+            if (this.filmes[i].id == id) {
+                indexOnArray = i;
+            }
+        }
+
+        document.getElementById("nome_filme").value = this.filmes[indexOnArray].nome;
+        document.getElementById("duracao_filme").value = this.filmes[indexOnArray].duracao;
+        document.getElementById("faixa_etaria").value = this.filmes[indexOnArray].faixa_etaria;
+        document.getElementById("genero_filme").value = this.filmes[indexOnArray].genero;
+        document.getElementById("sinopse_filme").value = this.filmes[indexOnArray].sinopse;
+
+        document.getElementById("btn-save").innerText = "Salvar Edição";
+        document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.saveFilmeEdit(${id})`);
+
+    }
+
+    saveFilmeEdit(id) {
+
+        let indexOnArray = "";
+        for (let i = 0; i < this.filmes.length; i++) { //fazendo busca do nome do cliente n localStorage
+            if (this.filmes[i].id == id) {
+                indexOnArray = i;
+            }
+        }
+
+        let filmeNovo = {};
+        this.getFilme(filmeNovo);
+
+        if (this.verifyFilme(filmeNovo)) {
+
+            this.filmes[indexOnArray].nome = document.getElementById("nome_filme").value;
+            this.filmes[indexOnArray].duracao = document.getElementById("duracao_filme").value;
+            this.filmes[indexOnArray].faixa_etaria = document.getElementById("faixa_etaria").value;
+            this.filmes[indexOnArray].genero = document.getElementById("genero_filme").value;
+            this.filmes[indexOnArray].sinopse = document.getElementById("sinopse_filme").value;
+
+            document.getElementById("btn-save").innerText = "Salvar";
+            document.getElementById("btn-save").setAttribute("onclick", `gerenciadorCinema.createFilme()`);
+
+            localStorage.setItem('filmes', JSON.stringify(this.filmes));
+            this.getColection();
+
+            this.cleanFilmeField();
+
+            this.createFilmeTable();
+        }
+
+    }
+
+    filmeRemove(id) {
+
+        this.getColection();
+
+        for (let i = 0; i < this.filmes.length; i++) { //fazendo busca do nome do filme n localStorage
+            if (this.filmes[i].id == id) {
+                this.filmes.splice(i, 1); //removemos o filme do array
+                localStorage.setItem('filmes', JSON.stringify(this.filmes));
+                this.getColection();
+            }
+        }
+
+        this.createFilmeTable();
+
+
+    }
+
+    // ----- cadeira
+
+    // ----- sala
+
+    // ----- sessao
+
+    // ----- usuario
 
     createUsuario() {
         let usuario = {};

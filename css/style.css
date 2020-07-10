@@ -291,4 +291,8 @@ thead td {
 
 .img-table {
     width: 20px;
+    cursor: pointer;
+}
+.img-table:hover {
+    transform: scale(1.2);
 }

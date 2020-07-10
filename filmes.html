@@ -11,7 +11,7 @@
     <script>window.onload = gerenciadorCinema.getColection()</script>
 </head>
 
-<body>
+<body onload="gerenciadorCinema.createFilmeTable()">
 
     <div class="wrapper">
 
@@ -48,8 +48,8 @@
                         </div>
 
                         <div class="flex flex-row space-between">
-                            <label for="duracao_filme">Duração</label>
-                            <input type="number" placeholder="Duração do Filme" id="duracao_filme">
+                            <label for="duracao_filme">Duração (H)</label>
+                            <input type="number" placeholder="Duração em Horas" id="duracao_filme">
                         </div>
 
                         <div class="flex flex-row space-between">
@@ -58,7 +58,7 @@
                         </div>
 
                         <div class="flex flex-row space-between">
-                            <label for="genero_filme">Faixa Etária</label>
+                            <label for="genero_filme">Gênero</label>
                             <input type="text" placeholder="Ex: Ação" id="genero_filme">
                         </div>
 
@@ -69,11 +69,11 @@
 
                         <div class="flex justify-center">
                             <div>
-                                <button class="btn btn-save">Salvar</button>
+                                <button class="btn btn-save" id="btn-save" onclick="gerenciadorCinema.createFilme()">Salvar</button>
                             </div>
 
                             <div>
-                                <button class="btn btn-red">Cancelar</button>
+                                <button class="btn btn-red" onclick="gerenciadorCinema.cleanFilmeField()">Limpar</button>
                             </div>
 
                         </div>
@@ -90,14 +90,16 @@
                         <thead>
                             <tr>
                                 <td>Nome</td>
-                                <td>Idade</td>
-                                <td>Email</td>
+                                <td>Duração</td>
+                                <td>F. Etária</td>
+                                <td>Gên.</td>
+                                <td>Sinopse</td>
                                 <td>Editar</td>
                                 <td>Excluir</td>
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody id="filme_tbody">
                         </tbody>
                     </table>
                 </div>
