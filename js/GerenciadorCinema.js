@@ -9,6 +9,7 @@ class GerenciadorCinema {
 
     constructor() {
         // gerenciadorCinema
+        // sessao
         this.sessoes = [];
         this.logged = false;
         // cadeira
@@ -19,7 +20,8 @@ class GerenciadorCinema {
         this.filmes = [];
         // sala
         this.salas = [];
-        // sessao
+        //reservas
+        this.reservas = [];
 
         // usuario
         this.usuarios = [];
@@ -30,6 +32,8 @@ class GerenciadorCinema {
         this.salasID = 0;
         this.sessoesID = 0;
         this.filmesID = 0;
+        this.reservasID = 0;
+
     }
 
     // ---------- GERENCIADOR CINEMA ----------
@@ -60,6 +64,10 @@ class GerenciadorCinema {
             localStorage.setItem('sessoes', JSON.stringify(this.sessoes));
         this.sessoes = JSON.parse(localStorage.getItem('sessoes'));
 
+        if (localStorage.getItem('reservas') == null)
+            localStorage.setItem('reservas', JSON.stringify(this.reservas));
+        this.reservas = JSON.parse(localStorage.getItem('reservas'));
+
         if (localStorage.getItem('usersID') == null)
             localStorage.setItem('usersID', JSON.stringify(this.usersID));
         this.usersID = JSON.parse(localStorage.getItem('usersID'));
@@ -79,6 +87,10 @@ class GerenciadorCinema {
         if (localStorage.getItem('filmesID') == null)
             localStorage.setItem('filmesID', JSON.stringify(this.filmesID));
         this.filmesID = JSON.parse(localStorage.getItem('filmesID'));
+
+        if (localStorage.getItem('reservasID') == null)
+            localStorage.setItem('reservasID', JSON.stringify(this.reservasID));
+        this.reservasID = JSON.parse(localStorage.getItem('reservasID'));
 
     }
 
@@ -540,8 +552,15 @@ class GerenciadorCinema {
         sala.nome = document.getElementById("nome_sala").value;
         sala.fileiras = 6;
         sala.cadeiras = 10;
-        // sala.fileiras = document.getElementById("fileiras").value;
-        // sala.cadeiras = document.getElementById("cadeira_por_fileira").value;
+
+        let totalCadeiras = sala.fileiras * sala.cadeiras;
+
+        if (Math.trunc(totalCadeiras % 10) != 0) {
+            sala.cadeirasUltimaFileira = (totalCadeiras % 10);
+        }
+        else {
+            sala.cadeirasUltimaFileira = 0;
+        }
 
     }
 
@@ -579,7 +598,9 @@ class GerenciadorCinema {
         localStorage.setItem('salasID', JSON.stringify(this.salasID));
 
         let totalCadeiras = sala.fileiras * sala.cadeiras;
+        let indiceDaSalaNoArray = this.salas.length;
         this.createCadeirasDaSala(sala.nome, totalCadeiras);
+
 
         this.salas.push(sala);
         localStorage.setItem('salas', JSON.stringify(this.salas));
@@ -1156,11 +1177,11 @@ class GerenciadorCinema {
 
         let numeroFileiras = "";
 
-        if (Math.trunc(totalCadeiras%10) != 0) {
+        if (Math.trunc(totalCadeiras % 10) != 0) {
             numeroFileiras = Math.trunc(totalCadeiras / 10) + 1;
         }
         else {
-            numeroFileiras = Math.trunc(totalCadeiras/10);
+            numeroFileiras = Math.trunc(totalCadeiras / 10);
         }
 
         for (let i = 0; i < numeroFileiras; i++) {
@@ -1198,6 +1219,14 @@ class GerenciadorCinema {
             sessoesReserva.add(optionSessao);
         }
 
+        let salaReserva = document.getElementById("sala");
+        for (let i = 0; i < this.salas.length; i++) {
+            let optionSala = document.createElement("option");
+            optionSala.text = this.salas[i].nome
+            optionSala.value = this.salas[i].id
+            salaReserva.add(optionSala);
+        }
+
         let clienteReserva = document.getElementById("cliente");
         for (let i = 0; i < this.clientes.length; i++) {
             let optionCliente = document.createElement("option");
@@ -1208,34 +1237,123 @@ class GerenciadorCinema {
 
     }
 
+    verificaReserva() {
+
+        if (document.getElementById("sala").value == "") {
+            alert("Escolha uma Sala!");
+        } else {
+
+            let idSala = document.getElementById("sala").value;
+            let nomeSala = "";
+            let numeroDefileiras = "";
+            // let numeroDeCadeiras = "";
+            // let cadeirasUltimaFileira = "";
+
+            for (var i = 0; i < this.salas.length; i++) {
+                if (this.salas[i].id == idSala) {
+                    nomeSala = this.salas[i].nome;
+                    numeroDefileiras = this.salas[i].fileiras;
+                    // numeroDeCadeiras = this.salas[i].cadeiras;
+                    // cadeirasUltimaFileira = this.salas[i].cadeirasUltimaFileira;
+                }
+            }
+
+            let salaDoCinema = document.getElementById("reservas_cadeiras")
+
+            for (i = 0; i < numeroDefileiras; i++) {
+                let fileiraField = document.createElement("div");
+                fileiraField.classList.add("fileira");
+                fileiraField.classList.add("flex");
+                fileiraField.classList.add("flex-row");
+                fileiraField.classList.add("space-between");
+
+
+                for (let j = 0; j < 10; j++) {
+                    let cadeira = document.createElement("div");
+                    cadeira.classList.add("flex");
+                    let alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+                    // cadeiraID = this.cadeiras[nomeSala][alfabeto.charAt(i)][j].id
+
+                    let textoCadeira = alfabeto.charAt(i) + (j + 1);
+                    cadeira.innerText = textoCadeira;
+                    cadeira.classList.add("texto-cadeira");
+                    cadeira.id = textoCadeira
+                    cadeira.setAttribute("onclick", `gerenciadorCinema.alteraReserva("${[nomeSala]}", "${[alfabeto.charAt(i)]}", "${[j]}", "${textoCadeira}")`);
+                    // cadeira.setAttribute("onclick", `gerenciadorCinema.alteraReserva("[cadeiras][${[nomeSala]}][${[alfabeto.charAt(i)]}][${[j]}]", "${textoCadeira}")`);
+                    // cadeira.setAttribute("onclick", `gerenciadorCinema.alteraReserva("cadeiras.${[nomeSala]}.${[alfabeto.charAt(i)]}[${[j]}], ${textoCadeira}")`);
+
+                    if (this.cadeiras[nomeSala][alfabeto.charAt(i)][j].ocupado == false) {
+                        cadeira.classList.add("cadeira-vazia");
+                    } else if (this.cadeiras[nomeSala][alfabeto.charAt(i)][j].ocupado == true) {
+                        cadeira.classList.add("cadeira-preenchida");
+                    }
+
+                    fileiraField.appendChild(cadeira);
+                }
+
+                salaDoCinema.appendChild(fileiraField);
+
+            }
+
+            ///cria ultima fileira aqui
+            /// com cadeiras ultima fileira
+            // e no primeiro for usa (i < numeroDefileiras - 1)
+
+
+        }
+    }
+
+    alteraReserva(a, b, c, id) {
+        if (this.cadeiras[a][b][c].ocupado == false) {
+
+            this.cadeiras[a][b][c].ocupado = true;
+
+            document.getElementById(id).classList.remove("cadeira-vazia");
+            document.getElementById(id).classList.add("cadeira-preenchida");
+            localStorage.setItem('cadeiras', JSON.stringify(this.cadeiras));
+            this.getColection();
+        }
+        else if (this.cadeiras[a][b][c].ocupado == true) {
+
+            this.cadeiras[a][b][c].ocupado = false;
+
+            document.getElementById(id).classList.remove("cadeira-preenchida");
+            document.getElementById(id).classList.add("cadeira-vazia");
+            localStorage.setItem('cadeiras', JSON.stringify(this.cadeiras));
+            this.getColection();
+        }
+    }
+
+
     fillReservaSeats() {
 
     }
 
     createReserva() {
 
-        let sessao = {};
+        let reserva = {};
 
-        this.getSessao(sessao);
+        this.getReserva(reserva);
 
-        if (this.verifySessao(sessao)) { //Se a sessao tiver os campos validos ira entrar
-            if (this.verifySessaoInLocalStorage(sessao)) { //Se a sessao não estiver no banco de dados ele ira entrar aqui para inserir
-                this.setSessaoInLocalStorage(sessao);
-                this.cleanSessaoField();
+        if (this.verifyReserva(reserva)) { //Se a reserva tiver os campos validos ira entrar
+            if (this.verifyReservaInLocalStorage(reserva)) { //Se a Reserva não estiver no banco de dados ele ira entrar aqui para inserir
+                this.setReservaInLocalStorage(reserva);
+                this.cleanReservaField();
                 alert("O Cadastro foi realizado com Sucesso!");
-                this.createSessaoTable();
+                this.createReservaTable();
             }
         }
     }
 
     getReserva(reserva) {
 
-        sessao.filme = document.getElementById("filme_sessao").value;
-        sessao.idioma = document.getElementById("idioma_sessao").value;
-        sessao.dimensao = document.getElementById("dimensao_sessao").value;
-        sessao.sala = document.getElementById("sala_sessao").value;
-        sessao.data = document.getElementById("data_sessao").value;
-        sessao.horario = document.getElementById("horario_sessao").value;
+        reserva.filme = document.getElementById("filme_sessao").value;
+        reserva.idioma = document.getElementById("idioma_sessao").value;
+        reserva.dimensao = document.getElementById("dimensao_sessao").value;
+        reserva.sala = document.getElementById("sala_sessao").value;
+        reserva.data = document.getElementById("data_sessao").value;
+        reserva.horario = document.getElementById("horario_sessao").value;
 
     }
 

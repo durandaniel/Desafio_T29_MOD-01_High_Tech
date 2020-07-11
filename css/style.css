@@ -10,9 +10,9 @@ a {
     text-decoration: none;
 }
 
-select {
-    width: 1px%;
-}
+/* select {
+    width: 1px;
+} */
 
 /* input e label */
 
@@ -295,4 +295,29 @@ thead td {
 }
 .img-table:hover {
     transform: scale(1.2);
+}
+
+.cadeira-vazia{
+    width: 40px;
+    height: 40px;
+    margin: 10px 5px ;
+    background-color: green;
+}
+
+.cadeira-preenchida{
+    width: 40px;
+    height: 40px;
+    margin: 10px 5px ;
+    background-color: red;
+}
+
+.fileira {
+    border: black solid 2px;
+    margin: 15px 10px;
+}
+
+.texto-cadeira {
+    text-align: center;
+    justify-content: center;
+    font-weight: 900;
 }

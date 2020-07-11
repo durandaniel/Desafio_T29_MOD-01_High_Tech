@@ -11,7 +11,8 @@
     <script>window.onload = gerenciadorCinema.getColection()</script>
 </head>
 
-<body onload="gerenciadorCinema.createReservaTable(); gerenciadorCinema.fillReservaFields(); gerenciadorCinema.fillReservaSeats()">
+<!-- <body onload="gerenciadorCinema.createReservaTable(); gerenciadorCinema.fillReservaFields(); gerenciadorCinema.fillReservaSeats()"> -->
+<body onload="gerenciadorCinema.fillReservaFields(); gerenciadorCinema.fillReservaSeats()">
 
     <div class="wrapper">
 
@@ -50,6 +51,13 @@
                         </div>
 
                         <div class="flex flex-row space-between margin-10">
+                            <label for="sala" class="">Sala</label>
+                            <select name="" id="sala">
+                                <option value="">Escolha</option>
+                            </select>
+                        </div>
+
+                        <div class="flex flex-row space-between margin-10">
                             <label for="cliente" class="">Cliente</label>
                             <select name="" id="cliente">
                                 <option value="">Escolha</option>
@@ -57,16 +65,22 @@
                         </div>
                     </div>
 
+                    <div class="flex justify-center">
+                        <div>
+                            <button class="btn btn-save" id="btn-save" onclick="gerenciadorCinema.verificaReserva()"">Verificar Assentos</button>
+                        </div>
+                    </div>
+
                     <div class="flex flex-column align-center width-80">
 
 
-                        <fieldset class="flex flex-row space-between width-80">
+                        <fieldset class="flex flex-row space-between width-80" id="reservas_cadeiras">
 
                         </fieldset>
 
                         <div class="flex justify-center">
                             <div>
-                                <button class="btn btn-save" id="btn-save" onclick="gerenciadorCinema.createReserva()>Salvar</button>
+                                <button class="btn btn-save" id="btn-save" onclick="gerenciadorCinema.createReserva()"">Salvar</button>
                             </div>
 
                             <div>
