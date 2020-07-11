@@ -11,8 +11,7 @@
     <script>window.onload = gerenciadorCinema.getColection()</script>
 </head>
 
-<!-- <body onload="gerenciadorCinema.createReservaTable(); gerenciadorCinema.fillReservaFields(); gerenciadorCinema.fillReservaSeats()"> -->
-<body onload="gerenciadorCinema.fillReservaFields(); gerenciadorCinema.fillReservaSeats()">
+<body onload="gerenciadorCinema.createReservaTable(); gerenciadorCinema.fillReservaFields(); gerenciadorCinema.fillReservaSeats()">
 
     <div class="wrapper">
 
@@ -78,17 +77,6 @@
 
                         </fieldset>
 
-                        <div class="flex justify-center">
-                            <div>
-                                <button class="btn btn-save" id="btn-save" onclick="gerenciadorCinema.createReserva()"">Salvar</button>
-                            </div>
-
-                            <div>
-                                <button class="btn btn-red" onclick="gerenciadorCinema.cleanReservaField()">Limpar</button>
-                            </div>
-
-                        </div>
-
                     </div>
 
                     <div class="espaco"></div>
@@ -101,8 +89,8 @@
                         <thead>
                             <tr>
                                 <td>Sessao</td>
+                                <td>Sala</td>
                                 <td>Cliente</td>
-                                <td>Editar</td>
                                 <td>Excluir</td>
                             </tr>
                         </thead>
